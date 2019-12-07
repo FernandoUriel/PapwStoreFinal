@@ -12,7 +12,7 @@
 <%
     producto listpro;
     String nUsuario="";
-                
+    String isAdmin="";            
     listpro = (producto) request.getAttribute("productoSh");                    
     
                     
@@ -31,7 +31,12 @@
         <script type="text/javascript">
 		
 		$(document).ready(function(){
-
+                 $("#btnDel").click(function(){
+                    var conf = confirm("Deseas borrar este Producto?")
+                     if(conf === true){
+                         window.location.href = "borrarProducto?idprod=<%= listpro.getIdproducto()%>";
+                     }
+                 });
 		});
 	</script>
 	
@@ -41,6 +46,16 @@
 	
 		<nav class="navbar navbar-expand-lg navbar-dark">
 			 <a class="navbar-brand" href="dashboard">Inicio</a>
+                         <%   if(session.getAttribute("usuario")!= null){
+                                isAdmin=(String)session.getAttribute("usuario");
+                                if(isAdmin.equals("Administrador")){
+                        %>
+                          <a class="navbar-brand" href="productoVenta.jsp">Vender</a>
+                          <a class="navbar-brand" href="productoManejo">Productos</a>
+                        <%
+                              }
+                                }
+                        %>
 			 <div class="dropdown show">
 					<a class="nav-brand dropdown-toggle" data-toggle="dropdown" id="dropdown_target" aria-haspopup="true" aria-expanded="false" href="#">Categorias
 					   <span class="caret"></span>
@@ -148,7 +163,19 @@
         
                     <!-- Botones de compra -->
                     <div class="section">
-                        <a class="btn btn-primary" id="btncomprar" href="cart.html"><span aria-hidden="true"></span><i class="fas fa-shopping-cart"></i> Agregar al carro</a>
+                        <%
+                            if(isAdmin.equals("Administrador")){
+                        %>
+                        <a class="btn btn-primary"  href="editarProducto?idprod=<%= listpro.getIdproducto()%>"><span aria-hidden="true"></span><i class="fas fa-edit"></i>Editar Producto</a>
+                        <br>
+                        <a class="btn btn-danger"  href="#" id="btnDel"><span aria-hidden="true"></span><i class="fas fa-trash-alt"></i>Eliminar Producto</a>
+                        <% 
+                            }else{
+                        %>
+                        <a class="btn btn-primary" id="btncomprar" href="cart.jsp"><span aria-hidden="true"></span><i class="fas fa-shopping-cart"></i> Agregar al carro</a>
+                        <%
+                        }
+                        %>
                     </div>                                        
                 </div>                              
         

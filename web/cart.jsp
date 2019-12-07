@@ -1,17 +1,19 @@
-<%-- 
-    Document   : productoVenta
-    Created on : 26/11/2019, 11:12:15 AM
-    Author     : fernandourg
---%>
-
-
+<%@page import="java.util.List"%>
+<%@page import="Models.producto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-  
+    //producto listpro;
     String nUsuario="";
-    String isAdmin="";
-                
-
+    String isAdmin="";            
+   // listpro = (producto) request.getAttribute("productoSh");
+    int idCat= 0;
+    int uni=0;
+    int idpr = 0;
+    //uni = listpro.getUnidades();
+    //idpr = listpro.getIdproducto();
+    //idCat = listpro.getIdCategoria();
+    boolean estado=false;
                     
 %>
 
@@ -30,8 +32,7 @@
 	$(document).ready(function(){
             //alert("todo cargado");
            
-            
-                   
+                               
             
            
         });	
@@ -130,77 +131,56 @@
 
 	<!-- fin navbar -->
         
-    <!-- Registro -->
+    <!-- Carro -->
+    <div class="container">
+		<table class="table table-hover table-condensed">
+			<thead>
+				<tr>
+					<th >Producto</th>
+					
+					<th >Cantidad</th>
+					
+					<th ></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td data-th="Product">
+						<div class="row">
+							<div class="col-sm-2 hidden-xs">
+								<img src="images/shoppingcartimg.jpg" alt="..." class="img-responsive" id="imgcart">
+							</div>
+								<div class="col-sm-10">
+									<h4 id="productTitle" class="nomargin">Nombre producto</h4>
+									<p id="productDetail">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+								</div>
+							</div>
+					</td>
+						
+						<td data-th="Quantity">
+								<input type="number" class="form-control text-center" value="1">
+						</td>
+					
+						<td class="actions" data-th="">
+							<button class="btn btn-info btn-sm"><i class="fas fa-sync-alt"></i></button>
+							<button class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>								
+						</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td><a href="#" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
+					<td><a href="presupuesto-chat.html" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
+					<td colspan="1" class="hidden-xs"></td>
+					
+					
+					
+				</tr>
+			</tfoot>
+		</table>
+	</div>
     
-    <div class="container" id="registro">
-
-            <h2>Colocar Producto</h2>
-        
-            <form action="productoVenta" method="post" class="register-form" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="nombre">Nombre Producto</label>
-                        <input name="nombre" class="form-control" type="text" required>
-                        
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="descripcion">Descripcion</label>
-                        <input name="descripcion" class="form-control" type="text" maxlength="300" required>             
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="unidades">Unidades</label>
-                        <input name="unidades" class="form-control" type="text" required>             
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="imagen1">Imagen 1</label>
-                        <input name="imagen1" class="form-control-file" type="file" >             
-                    </div>            
-                </div>
-                <div class="row">      
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="categoria">Categoria</label>
-                        <select name="categoria" id="ct">
-                            <option value="1" selected>Smartphone</option>
-                            <option value="2">Hogar</option>
-                            <option value="3">Electronicos</option>
-                            <option value="4">Juguetes</option>
-                        </select>    
-                    </div>            
-                </div>
-                <div class="row">
-                    <hr>
-                </div>
-                <div class="row">
-                    <div class="form-check">
-                        <input class="form-check-input" name="estado" type="checkbox" value="1">
-                        <label class="form-check-label" for="defaultCheck1">
-                          En venta
-                        </label>
-                      </div>
-                      </div>   
-                <div class="row">
-                      <div class="form-check">
-                        <input class="form-check-input" name="estado" type="checkbox" value="2">
-                        <label class="form-check-label" for="defaultCheck2">
-                          En borrador
-                        </label>
-                      </div>
-                </div>   
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                        <input type="submit" id="btnReg" class="btn btn-dark" value="Colocar">
-                    </div>
-                </div>       
-            </form>
-        </div>
-        <hr>
-    <!-- FinRegistro -->
+    <!-- Fin Carro -->
 
 
     <!-- Modal -->

@@ -1,17 +1,24 @@
 <%-- 
-    Document   : productoVenta
-    Created on : 26/11/2019, 11:12:15 AM
+    Document   : editarProducto
+    Created on : 7/12/2019, 12:08:06 AM
     Author     : fernandourg
 --%>
-
-
+<%@page import="java.util.List"%>
+<%@page import="Models.producto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-  
+    producto listpro;
     String nUsuario="";
-    String isAdmin="";
-                
-
+    String isAdmin="";            
+    listpro = (producto) request.getAttribute("productoSh");
+    int idCat= 0;
+    int uni=0;
+    int idpr = 0;
+    uni = listpro.getUnidades();
+    idpr = listpro.getIdproducto();
+    idCat = listpro.getIdCategoria();
+    boolean estado=false;
                     
 %>
 
@@ -30,8 +37,7 @@
 	$(document).ready(function(){
             //alert("todo cargado");
            
-            
-                   
+                               
             
            
         });	
@@ -134,32 +140,32 @@
     
     <div class="container" id="registro">
 
-            <h2>Colocar Producto</h2>
+            <h2>Editar Producto</h2>
         
-            <form action="productoVenta" method="post" class="register-form" enctype="multipart/form-data">
+            <form action="editarProducto2" method="POST" class="register-form" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="nombre">Nombre Producto</label>
-                        <input name="nombre" class="form-control" type="text" required>
+                        <input name="nombre" class="form-control" type="text" value="<%= listpro.getNombre()%>" required>
                         
                     </div>            
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="descripcion">Descripcion</label>
-                        <input name="descripcion" class="form-control" type="text" maxlength="300" required>             
+                        <label for="descripcion1">Descripcion</label>
+                        <input name="descripcion" class="form-control" type="text" maxlength="300"  value="<%= listpro.getDescripcion()%>" required>             
                     </div>            
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="unidades">Unidades</label>
-                        <input name="unidades" class="form-control" type="text" required>             
+                        <input name="unidades" class="form-control" type="number" value="<%= uni%>" required>             
                     </div>            
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="imagen1">Imagen 1</label>
-                        <input name="imagen1" class="form-control-file" type="file" >             
+                        <input name="imagen1" class="form-control-file" type="file"value="<%= listpro.getImagen()%>">             
                     </div>            
                 </div>
                 <div class="row">      
@@ -170,7 +176,7 @@
                             <option value="2">Hogar</option>
                             <option value="3">Electronicos</option>
                             <option value="4">Juguetes</option>
-                        </select>    
+                        </select>
                     </div>            
                 </div>
                 <div class="row">
@@ -178,7 +184,7 @@
                 </div>
                 <div class="row">
                     <div class="form-check">
-                        <input class="form-check-input" name="estado" type="checkbox" value="1">
+                        <input class="form-check-input" name="estado" type="checkbox" value="1" checked>
                         <label class="form-check-label" for="defaultCheck1">
                           En venta
                         </label>
@@ -191,10 +197,16 @@
                           En borrador
                         </label>
                       </div>
-                </div>   
+                </div>
+                <div class="row">
+                      
+                    <input class="form-control" name="idProducto" type="number" value="<%= idpr%>" hidden>
+                        
+                      
+                </div>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                        <input type="submit" id="btnReg" class="btn btn-dark" value="Colocar">
+                        <input type="submit" id="btnReg" class="btn btn-dark" value="Actualizar">
                     </div>
                 </div>       
             </form>

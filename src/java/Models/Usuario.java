@@ -9,6 +9,6 @@ package Models;
  *
  * @author fernandourg
  */
-public class Producto {
+public class Usuario {
     
 }

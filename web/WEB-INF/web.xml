@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>Dashboard</servlet-name>
-        <servlet-class>Controller.Dashboard</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Registrar</servlet-name>
         <servlet-class>Controller.Registrar</servlet-class>
     </servlet>
@@ -40,14 +36,26 @@
         <servlet-name>getUserImage</servlet-name>
         <servlet-class>Controller.getUserImage</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Dashboard</servlet-name>
-        <url-pattern>/Dashboard</url-pattern>
-    </servlet-mapping>
+    <servlet>
+        <servlet-name>productoManejo</servlet-name>
+        <servlet-class>Controller.productoManejo</servlet-class>
+    </servlet>
     <welcome-file-list>
         <welcome-file>dashboard</welcome-file>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>editarProducto</servlet-name>
+        <servlet-class>Controller.editarProducto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>editarProducto2</servlet-name>
+        <servlet-class>Controller.editarProducto2</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>borrarProducto</servlet-name>
+        <servlet-class>Controller.borrarProducto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -83,6 +91,22 @@
     <servlet-mapping>
         <servlet-name>getUserImage</servlet-name>
         <url-pattern>/getUserImage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>productoManejo</servlet-name>
+        <url-pattern>/productoManejo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editarProducto</servlet-name>
+        <url-pattern>/editarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editarProducto2</servlet-name>
+        <url-pattern>/editarProducto2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>borrarProducto</servlet-name>
+        <url-pattern>/borrarProducto</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

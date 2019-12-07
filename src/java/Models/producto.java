@@ -18,6 +18,10 @@ public class producto {
     private byte[] imagen;
     private String valoracion;
     private int idproducto;
+    private int unidades;
+    private boolean estado;
+    private int idCategoria;
+    
 
    
     public producto() {
@@ -109,6 +113,31 @@ public class producto {
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
+
+    public int getUnidades() {
+        return unidades;
+    }
+
+    public void setUnidades(int unidades) {
+        this.unidades = unidades;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+    
     
     
 }

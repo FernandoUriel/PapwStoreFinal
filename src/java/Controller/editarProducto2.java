@@ -22,7 +22,7 @@ import javax.servlet.http.Part;
  * @author fernandourg
  */
 @MultipartConfig(maxFileSize = 1000*1000*5, maxRequestSize = 1000*1000*25, fileSizeThreshold = 1000*1000)
-public class productoVenta extends HttpServlet {
+public class editarProducto2 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,18 +33,7 @@ public class productoVenta extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-  
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -58,10 +47,13 @@ public class productoVenta extends HttpServlet {
             throws ServletException, IOException {
         String nombre = request.getParameter("nombre");
         String descripcion = request.getParameter("descripcion");
-        int unidades = Integer.parseInt(request.getParameter("unidades"));
+       
+        int unidades1 = Integer.parseInt(request.getParameter("unidades"));
         int categoria = Integer.parseInt(request.getParameter("categoria"));
         Part file = request.getPart("imagen1");
         int estado = Integer.parseInt(request.getParameter("estado"));
+        int idProducto = Integer.parseInt(request.getParameter("idProducto"));
+        
         boolean estadoB=false;
         
         if(estado==1){
@@ -87,15 +79,14 @@ public class productoVenta extends HttpServlet {
         
         Consultas co = new Consultas();
         
-          if(co.productoVenta(nombre, descripcion, unidades,estadoB, categoria,file.getInputStream()))
+          if(co.productoEditado(nombre, descripcion, unidades1, estadoB, categoria, file.getInputStream(),idProducto))
          {
-            response.sendRedirect("dashboard");
+            response.sendRedirect("productoManejo");
         }else{
             response.sendRedirect("index.html");
         }
         
     }
-
     /**
      * Returns a short description of the servlet.
      *

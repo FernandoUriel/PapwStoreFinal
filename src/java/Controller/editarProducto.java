@@ -6,23 +6,19 @@
 package Controller;
 
 import Models.Consultas;
-import Utils.FilesUtils;
-import java.io.File;
+import Models.producto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
  * @author fernandourg
  */
-@MultipartConfig(maxFileSize = 1000*1000*5, maxRequestSize = 1000*1000*25, fileSizeThreshold = 1000*1000)
-public class productoVenta extends HttpServlet {
+public class editarProducto extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,7 +29,17 @@ public class productoVenta extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int idpro = Integer.parseInt(request.getParameter("idprod"));
+        Consultas co = new Consultas();
+        producto proS = co.productoSearch(idpro);
+        request.setAttribute("productoSh", proS);
+        
+        request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
+      
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -44,7 +50,12 @@ public class productoVenta extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-  
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -56,44 +67,7 @@ public class productoVenta extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String nombre = request.getParameter("nombre");
-        String descripcion = request.getParameter("descripcion");
-        int unidades = Integer.parseInt(request.getParameter("unidades"));
-        int categoria = Integer.parseInt(request.getParameter("categoria"));
-        Part file = request.getPart("imagen1");
-        int estado = Integer.parseInt(request.getParameter("estado"));
-        boolean estadoB=false;
-        
-        if(estado==1){
-            estadoB=true;
-        
-        }else if(estado==2){
-            estadoB=false;
-        
-        }
-        
-        
-        
-        String path = request.getServletContext().getRealPath("");
-        File fileSaveDir = new File(path + FilesUtils.RUTE_USER_IMAGE);
-        if(!fileSaveDir.exists()){
-            fileSaveDir.mkdir();
-        }
-        
-        //Resguardamos la imagen
-        String contentType = file.getContentType();//Resguarden esto para saber el tipo
-        String nameImage =  file.getName() + System.currentTimeMillis() + FilesUtils.GetExtension(contentType);
-        file.write(path + nameImage);
-        
-        Consultas co = new Consultas();
-        
-          if(co.productoVenta(nombre, descripcion, unidades,estadoB, categoria,file.getInputStream()))
-         {
-            response.sendRedirect("dashboard");
-        }else{
-            response.sendRedirect("index.html");
-        }
-        
+        processRequest(request, response);
     }
 
     /**

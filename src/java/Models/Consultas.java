@@ -135,7 +135,7 @@ public class Consultas extends Conexion{
         try {
             int timh1 = 4;
             int timh2 = 3;
-            int timh3 = 0;
+            int timh3 = 1;
             
             String consulta ="select idproducto, nombre, descripcion, fecha, imagen1 from producto WHERE estado=? " +
                 "ORDER BY ? DESC " +
@@ -145,6 +145,92 @@ public class Consultas extends Conexion{
             pst.setInt(1, timh3);
             pst.setInt(2, timh1);
             pst.setInt(3, timh2);
+            
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            int idpro = rs.getInt("producto.idproducto");
+            String nombre = rs.getString("nombre");
+            String desc = rs.getString("descripcion");
+            byte[] image = rs.getBytes("imagen1");
+            producto productoDash = new producto(nombre,desc,image,idpro);
+            listaproducto.add(productoDash);
+            
+            }
+        } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+       
+       return listaproducto;
+    }
+    
+    public List<producto> proEnVenta(){
+       PreparedStatement pst = null;
+       ResultSet rs = null;
+       List<producto> listaproducto = new ArrayList<producto>();
+       
+        try {
+            int timh1 = 4;
+            int timh2 = 3;
+            int timh3 = 1;
+            
+            String consulta ="select idproducto, nombre, descripcion, fecha, imagen1 from producto WHERE estado=? ";
+            pst = getConexion().prepareStatement(consulta);
+            //pst.setString(1, valora_id);
+            pst.setInt(1, timh3);
+            
+            
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            int idpro = rs.getInt("producto.idproducto");
+            String nombre = rs.getString("nombre");
+            String desc = rs.getString("descripcion");
+            byte[] image = rs.getBytes("imagen1");
+            producto productoDash = new producto(nombre,desc,image,idpro);
+            listaproducto.add(productoDash);
+            
+            }
+        } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+       
+       return listaproducto;
+    }
+    
+    public List<producto> proEnBorrador(){
+       PreparedStatement pst = null;
+       ResultSet rs = null;
+       List<producto> listaproducto = new ArrayList<producto>();
+       
+        try {
+            int timh1 = 4;
+            int timh2 = 3;
+            int timh3 = 0;
+            
+            String consulta ="select idproducto, nombre, descripcion, fecha, imagen1 from producto WHERE estado=? ";
+            pst = getConexion().prepareStatement(consulta);
+            //pst.setString(1, valora_id);
+            pst.setInt(1, timh3);
+        
             
             rs= pst.executeQuery();
             
@@ -210,7 +296,7 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select idproducto,nombre, descripcion, imagen1 from producto " +
+            String consulta = "select idproducto,nombre, descripcion, imagen1,unidades,idcategoria,estado from producto " +
                 "where idproducto = ?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idprod);
@@ -222,6 +308,9 @@ public class Consultas extends Conexion{
                 proS.setNombre(rs.getString("nombre"));
                 proS.setDescripcion(rs.getString("descripcion"));
                 proS.setImagen(rs.getBytes("imagen1"));
+                proS.setUnidades(rs.getInt("unidades"));
+                proS.setIdCategoria(rs.getInt("idcategoria"));
+                proS.setEstado(rs.getBoolean("estado"));
             }
             
        } catch (SQLException e) {
@@ -239,10 +328,35 @@ public class Consultas extends Conexion{
         return proS;
     }
     
-    public boolean productoVenta(String nombre, String descripcion, int unidades, int categoria, InputStream imagen){
+    public boolean productoBorrar(int idprod){
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+    
+       try {
+            String consulta = "DELETE FROM producto WHERE idproducto=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idprod);
+            if(pst.executeUpdate()==1){
+               return true;
+           }
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+    return false;
+    
+    }  
+    public boolean productoVenta(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen){
         PreparedStatement pst = null;
        try {
-           boolean estado = false;
+           
                   
            String consulta = "insert into producto (nombre, descripcion, unidades, estado, fecha, idcategoria,imagen1) " +
                                 "values(?,?,?,?,NOW(),?,?)";
@@ -253,6 +367,37 @@ public class Consultas extends Conexion{
            pst.setBoolean(4, estado);
            pst.setInt(5, categoria);
            pst.setBinaryStream(6, imagen);
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+    return false;
+    }
+    
+    public boolean productoEditado(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen, int idProducto){
+        PreparedStatement pst = null;
+       try {
+           
+                  
+           String consulta = "update producto SET nombre=?, descripcion=?, unidades=?, estado=?, idcategoria=?, imagen1=? " +
+                                "WHERE idproducto = ?";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setString(1, nombre);
+           pst.setString(2, descripcion);
+           pst.setInt(3, unidades);
+           pst.setBoolean(4, estado);
+           pst.setInt(5, categoria);
+           pst.setBinaryStream(6, imagen);
+           pst.setInt(7, idProducto);
            
            if(pst.executeUpdate()==1){
                return true;
@@ -343,14 +488,23 @@ public class Consultas extends Conexion{
         
         Consultas co = new Consultas();
         
-       List<producto> listb = co.dashValoracion();
+       //List<producto> listb = co.proEnVenta();
         
-       for(producto lib : listb){
+       /*for(producto lib : listb){
            System.out.println(lib.getNombre());
            System.out.println(lib.getDescripcion());
-       }
+       }*/
+       
+       /*producto Pro = new producto();
+       Pro = co.productoSearch(5);
         
-      
+        System.out.println(Pro.getNombre());
+        System.out.println(Pro.getIdproducto());
+        System.out.println(Pro.getIdCategoria());
+        System.out.println(Pro.getDescripcion());
+        System.out.println(Pro.getUnidades());
+        System.out.println(Pro.isEstado());*/
+       //co.productoEditado("Bocinas negras duplicadas", "jalo", 9, true, 3, imagen, 22)
             
     }
 }

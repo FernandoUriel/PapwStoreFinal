@@ -46,7 +46,8 @@
                                 isAdmin=(String)session.getAttribute("usuario");
                                 if(isAdmin.equals("Administrador")){
                         %>
-                          <a class="navbar-brand" href="dashboard">Productos</a>
+                          <a class="navbar-brand" href="productoVenta.jsp">Vender</a>
+                          <a class="navbar-brand" href="productoManejo">Productos</a>
                         <%
                               }
                                 }

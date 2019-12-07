@@ -1,45 +1,41 @@
 <%-- 
-    Document   : productoVenta
-    Created on : 26/11/2019, 11:12:15 AM
+    Document   : productoBorradores
+    Created on : 6/12/2019, 09:37:50 PM
     Author     : fernandourg
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="Models.producto"%>
+<%@page import="java.util.ArrayList"%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-  
+    List<producto> listpro;
+    List<producto> listpro2;
     String nUsuario="";
     String isAdmin="";
                 
-
+    listpro = (List <producto>) request.getAttribute("libro_venta");                    
+    listpro2 = (List <producto>) request.getAttribute("libro_borra");
                     
 %>
 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
+    <head>
+        <meta charset="UTF-8">
 	<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover">
-	<title>Registrarse</title>
+	<title>Landing Page</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/b26f182c55.js" crossorigin="anonymous"></script>
-        <script>
-	$(document).ready(function(){
-            //alert("todo cargado");
-           
-            
-                   
-            
-           
-        });	
-	
-	</script>
-	
-</head>
-<body>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+    </head>
+    <body>
+        <body>
 	<!-- nav bar -->
 	
 		<nav class="navbar navbar-expand-lg navbar-dark">
@@ -130,77 +126,55 @@
 
 	<!-- fin navbar -->
         
-    <!-- Registro -->
-    
-    <div class="container" id="registro">
-
-            <h2>Colocar Producto</h2>
+        <!-- Productos -->
+        <div class="container">
+		<hr>
+		<p class=text-left text-success >En Venta</p>
+		<!-- cards -->
+			<div class="row">
+                            <%
+                                 for(producto lib : listpro){
+                            %>
+				<div class="col-4">
+					<div class="card d-inline-block">
+                                            <img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5  class="card-title"><%= lib.getNombre()%></h5>
+							<p class="card-text" maxlength="20"><%= lib.getDescripcion()%></p>
+                                                        <a href="productoShow?idprod=<%= lib.getIdproducto()%>" class="btn btn-primary">Detalles</a>
+							
+						</div>
+					</div>
+				</div>
+                            <%
+                                }
+                            %>		
+			</div>
+			<hr>
+			
+			<p class=text-left text-warning>Borradores</p>
+			<div class="row">
+                            <%
+                                 for(producto lib2 : listpro2){
+                            %>
+				<div class="col-4">
+					<div class="card d-inline-block">
+						<img src="getProductoImage?idprod=<%= lib2.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
+						<div class="card-body">
+							<h5  class="card-title"><%= lib2.getNombre()%></h5>
+							<p class="card-text" maxlength="20"><%= lib2.getDescripcion()%></p>
+							<a href="productoShow?idprod=<%= lib2.getIdproducto()%>" class="btn btn-primary">Detalles</a>
+							
+						</div>
+					</div>
+				</div>
+                             <%
+                                }
+                            %>	
+			</div>
+	</div>
         
-            <form action="productoVenta" method="post" class="register-form" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="nombre">Nombre Producto</label>
-                        <input name="nombre" class="form-control" type="text" required>
-                        
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="descripcion">Descripcion</label>
-                        <input name="descripcion" class="form-control" type="text" maxlength="300" required>             
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="unidades">Unidades</label>
-                        <input name="unidades" class="form-control" type="text" required>             
-                    </div>            
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="imagen1">Imagen 1</label>
-                        <input name="imagen1" class="form-control-file" type="file" >             
-                    </div>            
-                </div>
-                <div class="row">      
-                    <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="categoria">Categoria</label>
-                        <select name="categoria" id="ct">
-                            <option value="1" selected>Smartphone</option>
-                            <option value="2">Hogar</option>
-                            <option value="3">Electronicos</option>
-                            <option value="4">Juguetes</option>
-                        </select>    
-                    </div>            
-                </div>
-                <div class="row">
-                    <hr>
-                </div>
-                <div class="row">
-                    <div class="form-check">
-                        <input class="form-check-input" name="estado" type="checkbox" value="1">
-                        <label class="form-check-label" for="defaultCheck1">
-                          En venta
-                        </label>
-                      </div>
-                      </div>   
-                <div class="row">
-                      <div class="form-check">
-                        <input class="form-check-input" name="estado" type="checkbox" value="2">
-                        <label class="form-check-label" for="defaultCheck2">
-                          En borrador
-                        </label>
-                      </div>
-                </div>   
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
-                        <input type="submit" id="btnReg" class="btn btn-dark" value="Colocar">
-                    </div>
-                </div>       
-            </form>
-        </div>
-        <hr>
-    <!-- FinRegistro -->
+        <!-- Fin Productos -->
 
 
     <!-- Modal -->
@@ -248,6 +222,5 @@
 
 
 		<!-- fin modal -->
-</body>
+    </body>
 </html>
-
