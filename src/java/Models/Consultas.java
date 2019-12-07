@@ -88,15 +88,17 @@ public class Consultas extends Conexion{
         try {
             int timh1 = 4;
             int timh2 = 3;
+            int timh3 = 1;
             
-            String consulta ="select producto.idproducto, nombre,descripcion, valoracion, imagen1 from producto " +
-                "INNER JOIN valoracion ON producto.idproducto = valoracion.idproducto " +
+            String consulta ="select producto.idproducto, nombre,descripcion, valoracion, imagen1,estado from producto " +
+                "INNER JOIN valoracion ON producto.idproducto = valoracion.idproducto and estado=? "+
                 "ORDER BY ? DESC " +
                 "LIMIT ?";
             pst = getConexion().prepareStatement(consulta);
             //pst.setString(1, valora_id);
-            pst.setInt(1, timh1);
-            pst.setInt(2, timh2);
+            pst.setInt(1, timh3);
+            pst.setInt(2, timh1);
+            pst.setInt(3, timh2);
             
             rs= pst.executeQuery();
             
@@ -133,14 +135,16 @@ public class Consultas extends Conexion{
         try {
             int timh1 = 4;
             int timh2 = 3;
+            int timh3 = 0;
             
-            String consulta ="select idproducto, nombre, descripcion, fecha, imagen1 from producto " +
+            String consulta ="select idproducto, nombre, descripcion, fecha, imagen1 from producto WHERE estado=? " +
                 "ORDER BY ? DESC " +
                 "LIMIT ?";
             pst = getConexion().prepareStatement(consulta);
             //pst.setString(1, valora_id);
-            pst.setInt(1, timh1);
-            pst.setInt(2, timh2);
+            pst.setInt(1, timh3);
+            pst.setInt(2, timh1);
+            pst.setInt(3, timh2);
             
             rs= pst.executeQuery();
             
@@ -304,14 +308,47 @@ public class Consultas extends Conexion{
         return listaproducto;
     
     }
+    
+    public byte [] getUserImage(String usuario){
+        byte[] imageBytes = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+           
+            String consulta = "select avatar from usuario where username=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setString(1, usuario);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+                imageBytes = rs.getBytes("avatar");
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        return imageBytes;
+    }
    
     public static void main(String[] args) {
         
         Consultas co = new Consultas();
         
-        System.out.println(co.autenticacion("LindaKitty", "Contrasena19"));
+       List<producto> listb = co.dashValoracion();
         
-      
+       for(producto lib : listb){
+           System.out.println(lib.getNombre());
+           System.out.println(lib.getDescripcion());
+       }
         
       
             

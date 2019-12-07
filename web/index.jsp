@@ -12,6 +12,7 @@
     List<producto> listpro;
     List<producto> listpro2;
     String nUsuario="";
+    String isAdmin="";
                 
     listpro = (List <producto>) request.getAttribute("libro_rate");                    
     listpro2 = (List <producto>) request.getAttribute("libro_date");
@@ -41,6 +42,15 @@
 	
 		<nav class="navbar navbar-expand-lg navbar-dark">
 			 <a class="navbar-brand" href="dashboard">Inicio</a>
+                         <%   if(session.getAttribute("usuario")!= null){
+                                isAdmin=(String)session.getAttribute("usuario");
+                                if(isAdmin.equals("Administrador")){
+                        %>
+                          <a class="navbar-brand" href="dashboard">Productos</a>
+                        <%
+                              }
+                                }
+                        %>
 			 <div class="dropdown show">
 					<a class="nav-brand dropdown-toggle" data-toggle="dropdown" id="dropdown_target" aria-haspopup="true" aria-expanded="false" href="#">Categorias
 					   <span class="caret"></span>
@@ -73,11 +83,17 @@
                                            
                                            nUsuario=(String)session.getAttribute("usuario");
                                            
-                                    %>
+                                    %>  
                                         <li class="nav-item">
-                                                     <a class="navbar-brand" href="#" data-toggle="modal" data-target="#modalLogIn"><%=nUsuario%></a>
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="...">
+                                        </li>
+                                        <li class="nav-item">
+                                                     <a class="navbar-brand" href="#" ><%=nUsuario%></a>
                                                             <span class="sr-only">(current)</span>
                                         </li>
+                                        
+                                            
+                                        
                                     <%
                                         }
                                     %>
@@ -151,7 +167,7 @@
                                  for(producto lib : listpro){
                             %>
 				<div class="col-4">
-					<div class="card">
+					<div class="card d-inline-block">
                                             <img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5  class="card-title"><%= lib.getNombre()%></h5>
@@ -173,7 +189,7 @@
                                  for(producto lib2 : listpro2){
                             %>
 				<div class="col-4">
-					<div class="card">
+					<div class="card d-inline-block">
 						<img src="getProductoImage?idprod=<%= lib2.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
 						<div class="card-body">
 							<h5  class="card-title"><%= lib2.getNombre()%></h5>

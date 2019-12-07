@@ -36,6 +36,10 @@
         <servlet-name>logOut</servlet-name>
         <servlet-class>Controller.logOut</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getUserImage</servlet-name>
+        <servlet-class>Controller.getUserImage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Dashboard</servlet-name>
         <url-pattern>/Dashboard</url-pattern>
@@ -75,6 +79,10 @@
     <servlet-mapping>
         <servlet-name>logOut</servlet-name>
         <url-pattern>/logOut</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getUserImage</servlet-name>
+        <url-pattern>/getUserImage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

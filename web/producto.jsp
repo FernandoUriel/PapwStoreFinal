@@ -73,9 +73,12 @@
                                            
                                            nUsuario=(String)session.getAttribute("usuario");
                                            
-                                    %>
+                                    %>  
                                         <li class="nav-item">
-                                                     <a class="navbar-brand" href="#" data-toggle="modal" data-target="#modalLogIn"><%=nUsuario%></a>
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="...">
+                                        </li>
+                                        <li class="nav-item">
+                                                     <a class="navbar-brand" href="#" ><%=nUsuario%></a>
                                                             <span class="sr-only">(current)</span>
                                         </li>
                                     <%
