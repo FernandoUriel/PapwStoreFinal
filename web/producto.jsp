@@ -103,7 +103,10 @@
                                         if(session.getAttribute("usuario")!= null){
                                     %>
 					<li class="nav-item">
-						 <a class="navbar-brand" href="logOut">LogOut</a>
+						 <a class="navbar-brand" href="logOut">Salir</a>
+					</li>
+                                        <li class="nav-item">
+						 <a class="navbar-brand" href="shwCart"><i class="fas fa-shopping-cart"></i></a>
 					</li>
                                      <%
                                         }else if(session.getAttribute("usuario")== null){
@@ -172,7 +175,7 @@
                         <% 
                             }else{
                         %>
-                        <a class="btn btn-primary" id="btncomprar" href="cart.jsp"><span aria-hidden="true"></span><i class="fas fa-shopping-cart"></i> Agregar al carro</a>
+                        <a class="btn btn-primary" id="btncomprar" href="addToCart?idprod=<%= listpro.getIdproducto()%>&idusu=<%=nUsuario%>"><span aria-hidden="true"></span><i class="fas fa-shopping-cart"></i> Agregar al carro</a>
                         <%
                         }
                         %>

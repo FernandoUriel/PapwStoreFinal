@@ -21,6 +21,7 @@ public class producto {
     private int unidades;
     private boolean estado;
     private int idCategoria;
+    private int idCarrito;
     
 
    
@@ -55,6 +56,22 @@ public class producto {
         this.descripcion = descripcion;
         this.imagen = imagen;
         this.idproducto = idproducto;
+    }
+
+    public producto(String nombre, String descripcion, byte[] imagen, int idproducto, int idCarrito) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.idproducto = idproducto;
+        this.idCarrito = idCarrito;
+    }
+
+    public int getIdCarrito() {
+        return idCarrito;
+    }
+
+    public void setIdCarrito(int idCarrito) {
+        this.idCarrito = idCarrito;
     }
     
     

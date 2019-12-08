@@ -56,6 +56,18 @@
         <servlet-name>borrarProducto</servlet-name>
         <servlet-class>Controller.borrarProducto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addToCart</servlet-name>
+        <servlet-class>Controller.addToCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>shwCart</servlet-name>
+        <servlet-class>Controller.shwCart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>delCart</servlet-name>
+        <servlet-class>Controller.delCart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -107,6 +119,18 @@
     <servlet-mapping>
         <servlet-name>borrarProducto</servlet-name>
         <url-pattern>/borrarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addToCart</servlet-name>
+        <url-pattern>/addToCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>shwCart</servlet-name>
+        <url-pattern>/shwCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>delCart</servlet-name>
+        <url-pattern>/delCart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

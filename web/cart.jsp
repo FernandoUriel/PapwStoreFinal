@@ -3,17 +3,13 @@
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    //producto listpro;
+    List<producto> listpro;
     String nUsuario="";
     String isAdmin="";            
-   // listpro = (producto) request.getAttribute("productoSh");
-    int idCat= 0;
-    int uni=0;
-    int idpr = 0;
-    //uni = listpro.getUnidades();
-    //idpr = listpro.getIdproducto();
-    //idCat = listpro.getIdCategoria();
-    boolean estado=false;
+     listpro = (List <producto>) request.getAttribute("pro_cart");                    
+    
+   
+   
                     
 %>
 
@@ -132,6 +128,9 @@
 	<!-- fin navbar -->
         
     <!-- Carro -->
+    <%
+        for(producto lib : listpro){
+    %>
     <div class="container">
 		<table class="table table-hover table-condensed">
 			<thead>
@@ -148,11 +147,11 @@
 					<td data-th="Product">
 						<div class="row">
 							<div class="col-sm-2 hidden-xs">
-								<img src="images/shoppingcartimg.jpg" alt="..." class="img-responsive" id="imgcart">
+								<img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" alt="..." class="img-responsive" id="imgcart">
 							</div>
 								<div class="col-sm-10">
-									<h4 id="productTitle" class="nomargin">Nombre producto</h4>
-									<p id="productDetail">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+									<h4 id="productTitle" class="nomargin"><%= lib.getNombre()%></h4>
+									<p class="d-inline-block" id="productDetail"><%= lib.getDescripcion()%></p>
 								</div>
 							</div>
 					</td>
@@ -163,14 +162,14 @@
 					
 						<td class="actions" data-th="">
 							<button class="btn btn-info btn-sm"><i class="fas fa-sync-alt"></i></button>
-							<button class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>								
+							<a class="btn btn-danger btn-sm" href="delCart?idcart=<%= lib.getIdCarrito()%>"><i class="far fa-trash-alt"></i></a>								
 						</td>
 				</tr>
 			</tbody>
 			<tfoot>
 				<tr>
-					<td><a href="#" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
-					<td><a href="presupuesto-chat.html" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
+					<td><a href="dashboard" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
+                                        <td><a href="presupuesto-chat.html?idcart=<%= lib.getIdCarrito()%>" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
 					<td colspan="1" class="hidden-xs"></td>
 					
 					
@@ -179,7 +178,9 @@
 			</tfoot>
 		</table>
 	</div>
-    
+        <%
+            }
+        %>	
     <!-- Fin Carro -->
 
 

@@ -483,7 +483,132 @@ public class Consultas extends Conexion{
         }
         return imageBytes;
     }
+    
+    public int getIdUser(String usuario){
+        int idUsua = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+           
+            String consulta = "select idusuario from usuario where username=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setString(1, usuario);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+                idUsua = rs.getInt("idusuario");
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        return idUsua;
+    }
+    
+      public boolean addCart(int idUsuario, int idProducto){
+       PreparedStatement pst = null;
+       try {
+           boolean admin = false;
+         
+           String consulta = "insert into carrito(idproducto, idusuario) " +
+                             "values (?,?)";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, idProducto);
+           pst.setInt(2, idUsuario);
+       
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+       return false;
+   }
    
+    public List<producto> cartShow(int idUsuario){
+        List<producto> listaproducto = new ArrayList<producto>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,idcarrito from producto " +
+                "INNER JOIN carrito ON producto.idproducto = carrito.idproducto AND carrito.idusuario = ?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idUsuario);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            int idpro = rs.getInt("producto.idproducto");
+            String nombre = rs.getString("nombre");
+            String desc = rs.getString("descripcion");
+            byte[] image = rs.getBytes("imagen1");
+            int idcart = rs.getInt("idcarrito");
+            producto productoDash = new producto(nombre,desc,image,idpro,idcart);
+            listaproducto.add(productoDash);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listaproducto;
+    
+    }
+    
+    public boolean cartDel(int idCart){
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+    
+       try {
+            String consulta = "DELETE FROM carrito WHERE idcarrito=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idCart);
+            if(pst.executeUpdate()==1){
+               return true;
+           }
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+      
+    return false;
+    }
+    
+      
     public static void main(String[] args) {
         
         Consultas co = new Consultas();

@@ -104,6 +104,9 @@
 					<li class="nav-item">
 						 <a class="navbar-brand" href="logOut">LogOut</a>
 					</li>
+                                        <li class="nav-item">
+						 <a class="navbar-brand" href="shwCart"><i class="fas fa-shopping-cart"></i></a>
+					</li>
                                      <%
                                         }else if(session.getAttribute("usuario")== null){
                                     %>

@@ -101,7 +101,7 @@
                                         if(session.getAttribute("usuario")!= null){
                                     %>
 					<li class="nav-item">
-						 <a class="navbar-brand" href="logOut">LogOut</a>
+						 <a class="navbar-brand" href="logOut">Salir</a>
 					</li>
                                      <%
                                         }else if(session.getAttribute("usuario")== null){
