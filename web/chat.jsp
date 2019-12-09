@@ -1,16 +1,20 @@
+<%@page import="Models.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    List<producto> listpro;
     String nUsuario="";
-    String isAdmin="";            
-     listpro = (List <producto>) request.getAttribute("pro_cart");                    
+    String isAdmin="";
+    String nomPro ="";
+    List<Mensaje> msjs;
+    msjs = (List <Mensaje>) request.getAttribute("msjsCht");
+    nomPro=(String) request.getAttribute("proNom");
+    //String iChat= (String)request.getAttribute("idChat");
+    //String iCart= (String) request.getAttribute("idCcart");
+    int idchatt = (Integer)request.getAttribute("idChat");
+    int idcartt = (Integer)request.getAttribute("idCcart");
     
-   
-   
-                    
 %>
 
 <!DOCTYPE html>
@@ -127,62 +131,57 @@
 
 	<!-- fin navbar -->
         
-    <!-- Carro -->
-    <%
-        for(producto lib : listpro){
-    %>
-    <div class="container">
-		<table class="table table-hover table-condensed">
-			<thead>
-				<tr>
-					<th >Producto</th>
-					
-					<th >Cantidad</th>
-					
-					<th ></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td data-th="Product">
-						<div class="row">
-							<div class="col-sm-2 hidden-xs">
-								<img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" alt="..." class="img-responsive" id="imgcart">
-							</div>
-								<div class="col-sm-10">
-									<h4 id="productTitle" class="nomargin"><%= lib.getNombre()%></h4>
-									<p class="d-inline-block" id="productDetail"><%= lib.getDescripcion()%></p>
-								</div>
-							</div>
-					</td>
-						
-						<td data-th="Quantity">
-								<input type="number" class="form-control text-center" value="1">
-						</td>
-					
-						<td class="actions" data-th="">
-							<button class="btn btn-info btn-sm"><i class="fas fa-sync-alt"></i></button>
-							<a class="btn btn-danger btn-sm" href="delCart?idcart=<%= lib.getIdCarrito()%>"><i class="far fa-trash-alt"></i></a>								
-						</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<tr>
-					<td><a href="dashboard" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
-                                        <td><a href="goChat?idcart=<%= lib.getIdCarrito()%>" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
-					<td colspan="1" class="hidden-xs"></td>
-					
-					
-					
-				</tr>
-			</tfoot>
-		</table>
-	</div>
-        <%
-            }
-        %>	
-    <!-- Fin Carro -->
 
+    
+    <!-- Chat -->
+    <div class="container">
+        <div class="chat">
+            <div class="page-header">
+                <h1 class="text-center text-primary">Chat</h1>
+            </div>
+            <div class="row">
+                <div class="card col-sm-12 bg-light">
+                    <div class="d-flex w-100 ">
+                        <h5 class="mb-1"><%=nomPro%></h5>
+                    </div>
+                    
+                </div>
+            </div>
+            <%
+                    for(Mensaje lisM : msjs){
+            %>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="chatbody">
+                        <table class="table">
+                            <tr>
+                                <td><%= lisM.getMensaje()%></td>
+                                <td class="d-flex justify-content-end"><%= lisM.getFecha()%></td>
+                            </tr>
+                        </table>
+                    </div>       
+                </div>
+            </div>
+            <%
+                    }
+            %>
+            <form action="mnjMsj" method="POST" enctype="multipart/form-data">
+                <div class="row align-bottom d-flex justify-content-end">
+                            <input type="text" value="<%= idchatt%>" name="idcha" hidden/>
+                            <input type="text" value="<%= idcartt%>" name="idcar" hidden/>
+                            <div class="col-sm-6 ">
+                                <input type="text" placeholder="Mensaje..." name="msje" class="form-control "/>
+                                
+                            </div>
+                            <div class="col-sm-1">
+                               <button type="submit" class="btn btn-info btn-block">Enviar</button>
+                            </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Fin del chat -->
+  
 
     <!-- Modal -->
     <!-- login -->

@@ -608,10 +608,298 @@ public class Consultas extends Conexion{
     return false;
     }
     
+    public boolean chatMK(int idUsuario, int idAdmin, int idProducto, int idCarrito){
+        PreparedStatement pst = null;
+       try {
+                
+           String consulta = "insert into chat (idusuario, idadmin, idproducto, idcarrito) " +
+                   "values(?,?,?,?)";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, idUsuario);
+           pst.setInt(2, idAdmin);
+           pst.setInt(3, idProducto);
+           pst.setInt(4, idCarrito);
+     
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+       return false;
+      
+    
+    }
+    
+    public int chatExist(int idCart){
+        int chatId=0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+
+             String consulta = "select idchat from chat WHERE chat.idcarrito = ?";
+             pst = getConexion().prepareStatement(consulta);
+             pst.setInt(1, idCart);
+             rs= pst.executeQuery();
+
+             while(rs.next())
+             {
+                 chatId = rs.getInt("idchat");
+             }
+
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+             try {
+                 if(getConexion() != null) getConexion().close();
+                 if(pst != null) pst.close();
+                 if(rs != null) rs.close();
+             } catch (SQLException e) {
+                 System.out.println("Error " +e);
+             }
+         }
+       return chatId;
+      
+    
+    }
+    
+    
+       public proCart getCarPro(int idcart){
+        proCart cartItem = new proCart();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select idproducto, idusuario from carrito WHERE idcarrito = ?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idcart);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            int idpro = rs.getInt("idproducto");
+            int idusu = rs.getInt("idusuario");
+            
+            cartItem.setIdproducto(idpro);
+            cartItem.setIdusuario(idusu);
+            cartItem.setIdcarrito(idcart);
+            
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return cartItem;
+    
+    }
+       
+     public Chat getChat(int idcart){
+        Chat chatIt = new Chat();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select idusuario, idadmin, idproducto, idchat WHERE idcarrito =?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idcart);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            int idpro = rs.getInt("idproducto");
+            int idusu = rs.getInt("idusuario");
+            int idadm = rs.getInt("idadmin");
+            int idchat = rs.getInt("idchat");
+            
+            chatIt.setIdproducto(idpro);
+            chatIt.setIdusuario(idusu);
+            chatIt.setIdcarrito(idcart);
+            chatIt.setIdchat(idchat);
+            
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return chatIt;
+    
+    }
+     
+     public List<Mensaje> getMsj(int idChat){
+        List<Mensaje> listMsj = new ArrayList<Mensaje>();
+        int orden=2;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select mensaje, horamsj, idmensaje, mensaje.idusuario from mensaje " +
+                "INNER JOIN chat ON chat.idchat = mensaje.idchat WHERE chat.idchat = ? "+
+                "ORDER BY ? ASC";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idChat);
+            pst.setInt(2, orden);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String mensaje = rs.getString("mensaje");
+            String hora = rs.getString("horamsj");
+            int idmsj = rs.getInt("idmensaje");
+            int idUsu = rs.getInt("idusuario");
+            Mensaje msj = new Mensaje(mensaje,hora,idmsj,idUsu,idChat);
+            listMsj.add(msj);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listMsj;
+    
+    }
+     
+     public boolean isChat(int idCart){
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            String consulta = "select * from chat where idcarrito = ?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idCart);
+           
+            rs = pst.executeQuery();
+            
+            if(rs.absolute(1)){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+    return false;
+    }
+     
+     public boolean addMsj(String msj,int usuario,int idchat){
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            String consulta = "insert into mensaje(mensaje, horamsj, idusuario, idchat) "+
+                    "values(?,NOW(),?,?)";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setString(1, msj);
+            pst.setInt(2, usuario);
+            pst.setInt(3, idchat);
+           
+             if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+       return false;
+    }
+     
+      public List<Chat> getChats(int idChat){
+        List<Chat> listChats = new ArrayList<Chat>();
+        int orden=2;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select mensaje, horamsj, idmensaje, mensaje.idusuario from mensaje " +
+                "INNER JOIN chat ON chat.idchat = mensaje.idchat WHERE chat.idchat = ? "+
+                "ORDER BY ? ASC";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idChat);
+            pst.setInt(2, orden);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String mensaje = rs.getString("mensaje");
+            String hora = rs.getString("horamsj");
+            int idmsj = rs.getInt("idmensaje");
+            int idUsu = rs.getInt("idusuario");
+            //Chat chat = new Mensaje(mensaje,hora,idmsj,idUsu,idChat);
+            //listChats.add(chat);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listChats;
+    
+    }
       
     public static void main(String[] args) {
         
         Consultas co = new Consultas();
+        Consultas co2 = new Consultas();
+        //proCart procart = co.getCarPro(1);
+        //producto pro = co.productoSearch(20);
+        List<Mensaje> msjs = co.getMsj(1);
         
        //List<producto> listb = co.proEnVenta();
         
@@ -630,6 +918,17 @@ public class Consultas extends Conexion{
         System.out.println(Pro.getUnidades());
         System.out.println(Pro.isEstado());*/
        //co.productoEditado("Bocinas negras duplicadas", "jalo", 9, true, 3, imagen, 22)
+       
+       /*proCart pro = co.getCarPro(1);
+       
+        System.out.println(pro.getIdcarrito());
+        System.out.println(pro.getIdproducto());*/
+       
+       for( Mensaje mj : msjs)
+       {
+           System.out.println(mj.getMensaje());
+       }
+      
             
     }
 }

@@ -68,6 +68,14 @@
         <servlet-name>delCart</servlet-name>
         <servlet-class>Controller.delCart</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>goChat</servlet-name>
+        <servlet-class>Controller.goChat</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>mnjMsj</servlet-name>
+        <servlet-class>Controller.mnjMsj</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -131,6 +139,14 @@
     <servlet-mapping>
         <servlet-name>delCart</servlet-name>
         <url-pattern>/delCart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>goChat</servlet-name>
+        <url-pattern>/goChat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>mnjMsj</servlet-name>
+        <url-pattern>/mnjMsj</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
