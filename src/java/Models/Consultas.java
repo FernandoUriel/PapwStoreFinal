@@ -1074,6 +1074,50 @@ public class Consultas extends Conexion{
         return false;
     }
      
+     public List<Compra> shwCompra(int idusuario){
+        List<Compra> listCom = new ArrayList<Compra>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
+                    "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
+                    "WHERE compra.idusuario = ?;";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idusuario);
+           
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String nombre = rs.getString("producto.nombre");
+            int idpro = rs.getInt("compra.idproducto");
+            String fecha = rs.getString("compra.fecha");
+            int precio = rs.getInt("precio");
+            int unidades = rs.getInt("compra.unidades");
+            int formapago = rs.getInt("formapago");
+            Compra com = new Compra(nombre,fecha,precio,unidades,formapago,idpro);
+            listCom.add(com);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listCom;
+    
+    }
+     
     public static void main(String[] args) {
         
         Consultas co = new Consultas();

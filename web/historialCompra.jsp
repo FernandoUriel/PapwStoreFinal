@@ -1,39 +1,37 @@
-<%-- 
-    Document   : index
-    Author     : fernandourg
---%>
+<%@page import="Models.Compra"%>
+<%@page import="Models.Chat"%>
+<%@page import="Models.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
 <%@page import="java.util.ArrayList"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
-    List<producto> listpro;
-    List<producto> listpro2;
     String nUsuario="";
     String isAdmin="";
-                
-    listpro = (List <producto>) request.getAttribute("libro_rate");                    
-    listpro2 = (List <producto>) request.getAttribute("libro_date");
-                    
+    List<Compra>  liC; 
+    liC= (List<Compra>) request.getAttribute("HiCom");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover">
-	<title>Landing Page</title>
+	<title>Registrarse</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/b26f182c55.js" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-		$('.carousel').carousel()
-		$(document).ready(function(){
-
-		});
+        <script>
+	$(document).ready(function(){
+            //alert("todo cargado");
+           
+                               
+            
+           
+        });	
+	
 	</script>
 	
 </head>
@@ -57,6 +55,7 @@
 					   <span class="caret"></span>
 				   </a>
 				   <div class="dropdown-menu" aria-labelledby="dropdown_target">
+					   
 					   <a class="dropdown-item" href="catSearch?idcat=1">Smartphones</a>
 					   <div class="dropdown-divider"></div>
 					   <a class="dropdown-item" href="catSearch?idcat=3">Electronicos</a>
@@ -72,7 +71,7 @@
 			 </button>
 			 <div class="collapse navbar-collapse" id="navbarResponsive">
 			 	<ul class="navbar-nav ml-auto">
-                                    <%
+			 		<%
                                         if(null == session.getAttribute("usuario")){
                                     %>
 			 		<li class="nav-item">
@@ -86,7 +85,7 @@
                                            
                                     %>  
                                         <li class="nav-item">
-                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px"  height="30px" class="card-img-top" alt="..." style="max-width:30px; ">
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="...">
                                         </li>
                                         <li class="nav-item">
                                                      <a class="navbar-brand" href="#" ><%=nUsuario%></a>
@@ -100,31 +99,11 @@
                                     %>
                                     <%
                                         if(session.getAttribute("usuario")!= null){
-                                        isAdmin=(String)session.getAttribute("usuario");
-                                        if(isAdmin.equals("Administrador")){
-                                            
                                     %>
 					<li class="nav-item">
 						 <a class="navbar-brand" href="logOut">LogOut</a>
 					</li>
-                                        <li class="nav-item">
-						 <a class="navbar-brand" href="lstChatAd"><i class="fas fa-comments"></i></a>
-					</li>
                                      <%
-                                         }
-                                        else{
-                                     %>
-                                     <li class="nav-item">
-						 <a class="navbar-brand" href="logOut">LogOut</a>
-					</li>
-                                        <li class="nav-item">
-						 <a class="navbar-brand" href="shwCart"><i class="fas fa-shopping-cart"></i></a>
-					</li>
-                                        <li class="nav-item">
-						 <a class="navbar-brand" href="shwHCompra"><i class="fas fa-shopping-bag"></i></a>
-					</li>
-                                     <%
-                                             }
                                         }else if(session.getAttribute("usuario")== null){
                                     %>
                                          <li class="nav-item">
@@ -146,89 +125,93 @@
 	
 
 	<!-- fin navbar -->
-
-	<!-- carrusel -->
-
-	<div class="container">
-		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-			    <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-			    <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-			    <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-			</ol>
-			  <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img src="images/item.jpeg" class="d-block w-100" alt="...">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="images/item2.jpg" class="d-block w-100" alt="...">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="images/item3.png" class="d-block w-100" alt="...">
-			    </div>
-			  </div>
-			  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Previous</span>
-			  </a>
-			  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Next</span>
-			  </a>
-			</div>
+        
+    <!-- Lista de chat -->
+    
+   	<div class="container">
+            <br>
+            <form action="filtroHistorial"method="GET">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select name="filtro"class="custom-select mr-sm-2">
+                            <option value="1">Fecha</option>
+                            <option value="2">Total</option>
+                            <option value="3">Unidades</option>
+                            <option value="5">Producto</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" name="filtro2" class="form-control"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="submit" value="Filtrar" class="btn btn-info">
+                    </div>
+                </div>
+            </form>
+            <br>
+		<table class="table table-hover table-condensed">
+			<thead class="thead-dark">
+				<tr>
+					<th >Producto</th>
+					<th >Precio</th>
+					<th >Cantidad</th>
+					<th >Total</th>
+					<th class="text-center">Fecha</th>
+					<th ></th>
+				</tr>
+			</thead>
+                        
+                        <%
+                            for(Compra cM : liC){
+                        %>
+			<tbody>
+				<tr>
+					<td data-th="Product">
+						<div class="row">
+							
+								<div class="col-sm-10">
+                                                                    <h4 id="productTitle" class="nomargin"><%= cM.getNombre()%></h4>
+									
+								</div>
+							</div>
+					</td>
+						<td data-th="Price"><%= cM.getPrecio()%></td>
+						<td>
+								<label class="text-center" value="1"><%= cM.getUnidades()%></label>
+						</td>
+                                                
+                                                <% int Total = cM.getPrecio()*cM.getUnidades();%>
+                                                <td data-th="Subtotal" class="text-center"><%=Total%></td>
+						<td data-th="Subtotal" class="text-center"><%= cM.getFecha()%></td>
+						<td class="actions" data-th="">
+													
+						</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					
+					<td colspan="1" class="hidden-xs"></td>
+					<td colspan="1" class="hidden-xs"></td>
+					<td colspan="1" class="hidden-xs"></td>
+					<td colspan="1" class="hidden-xs"></td>
+					<td colspan="1" class="hidden-xs"></td>
+					<td colspan="1" class="hidden-xs"></td>
+					
+				</tr>
+			</tfoot>
+                        <%
+                            }
+                        %>
+		</table>
 	</div>
 
-	<!-- fin del carrusel -->
-	<div class="container">
-		<hr>
-		<p class=text-left>Mejor Valorado</p>
-		<!-- cards -->
-			<div class="row">
-                            <%
-                                 for(producto lib : listpro){
-                            %>
-				<div class="col-4">
-					<div class="card d-inline-block">
-                                            <img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5  class="card-title"><%= lib.getNombre()%></h5>
-							<p class="card-text" maxlength="20"><%= lib.getDescripcion()%></p>
-                                                        <a href="productoShow?idprod=<%= lib.getIdproducto()%>" class="btn btn-primary">Detalles</a>
-							
-						</div>
-					</div>
-				</div>
-                            <%
-                                }
-                            %>		
-			</div>
-			<hr>
-			
-			<p class=text-left>Ultimo agregado</p>
-			<div class="row">
-                            <%
-                                 for(producto lib2 : listpro2){
-                            %>
-				<div class="col-4">
-					<div class="card d-inline-block">
-						<img src="getProductoImage?idprod=<%= lib2.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5  class="card-title"><%= lib2.getNombre()%></h5>
-							<p class="card-text" maxlength="20"><%= lib2.getDescripcion()%></p>
-							<a href="productoShow?idprod=<%= lib2.getIdproducto()%>" class="btn btn-primary">Detalles</a>
-							
-						</div>
-					</div>
-				</div>
-                             <%
-                                }
-                            %>	
-			</div>
-	</div>
-	<!-- fin cards -->
-
-		<!-- Modal -->
-		<!-- login -->
+    
+    <!-- Fin de lista de Chat -->
+    
+    
+    <!-- Modal -->
+    <!-- login -->
 	<div class="modal fade" id="modalLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -270,6 +253,8 @@
 
 	
 
+
 		<!-- fin modal -->
 </body>
 </html>
+

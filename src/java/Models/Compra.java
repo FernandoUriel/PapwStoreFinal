@@ -31,6 +31,15 @@ public class Compra {
         this.idproducto = idproducto;
     }
 
+    public Compra(String nombre, String fecha, int precio, int unidades, int formapago, int idproducto) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.precio = precio;
+        this.unidades = unidades;
+        this.formapago = formapago;
+        this.idproducto = idproducto;
+    }
+
     public String getNombre() {
         return nombre;
     }

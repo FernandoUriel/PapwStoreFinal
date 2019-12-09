@@ -88,6 +88,14 @@
         <servlet-name>compraSv</servlet-name>
         <servlet-class>Controller.compraSv</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>shwHCompra</servlet-name>
+        <servlet-class>Controller.shwHCompra</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>filtroHistorial</servlet-name>
+        <servlet-class>Controller.filtroHistorial</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -171,6 +179,14 @@
     <servlet-mapping>
         <servlet-name>compraSv</servlet-name>
         <url-pattern>/compraSv</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>shwHCompra</servlet-name>
+        <url-pattern>/shwHCompra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filtroHistorial</servlet-name>
+        <url-pattern>/filtroHistorial</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
