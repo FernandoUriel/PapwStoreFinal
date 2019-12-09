@@ -28,6 +28,17 @@ public class producto {
     public producto() {
     }
 
+    public producto(String nombre, String descripcion, byte[] imagen, int idproducto, int idCarrito, int precio) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.imagen = imagen;
+        this.idproducto = idproducto;
+        this.idCarrito = idCarrito;
+    }
+    
+    
+
     public producto(String nombre, String descripcion, String categoria, byte[] imagen) {
         this.nombre = nombre;
         this.descripcion = descripcion;

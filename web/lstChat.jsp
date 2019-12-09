@@ -1,3 +1,4 @@
+<%@page import="Models.Chat"%>
 <%@page import="Models.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
@@ -6,14 +7,11 @@
 <%
     String nUsuario="";
     String isAdmin="";
-    String nomPro ="";
-    List<Mensaje> msjs;
-    msjs = (List <Mensaje>) request.getAttribute("msjsCht");
-    nomPro=(String) request.getAttribute("proNom");
-    //String iChat= (String)request.getAttribute("idChat");
-    //String iCart= (String) request.getAttribute("idCcart");
-    int idchatt = (Integer)request.getAttribute("idChat");
-    int idcartt = (Integer)request.getAttribute("idCcart");
+    
+    List<Chat> lsC = (List<Chat>) request.getAttribute("lsChats");
+    
+    
+
     
 %>
 
@@ -131,92 +129,36 @@
 
 	<!-- fin navbar -->
         
-
+    <!-- Lista de chat -->
     
-    <!-- Chat -->
     <div class="container">
-        <div class="chat">
-            <div class="page-header">
-                <h1 class="text-center text-primary">Chat</h1>
-            </div>
-            <div class="row">
-                <div class="card col-sm-12 bg-light">
-                    <div class="d-flex w-100 ">
-                        <h5 class="mb-1"><%=nomPro%></h5>
-                    </div>
-                    
-                </div>
-            </div>
-            <%
-                    for(Mensaje lisM : msjs){
-            %>
-           <%
-                            if(lisM.getIdusuario()==3){
-                               
-                        %>
-                        <table class="table table-dark">
-                            <tr>
-                                <td><%= lisM.getMensaje()%></td>
-                                <td class="d-flex justify-content-end"><%= lisM.getFecha()%></td>
-                            </tr>
-                        </table>
-                        <%
-                        }else{ 
-                        
-                        %>
-                        <table class="table">
-                            <tr>
-                                <td><%= lisM.getMensaje()%></td>
-                                <td class="d-flex justify-content-end"><%= lisM.getFecha()%></td>
-                            </tr>
-                        </table>
-                        <%
-                        }
-                        %>
-            <%
-                    }
-            %>
-            <form action="mnjMsj" method="POST" enctype="multipart/form-data">
-                <div class="row align-bottom d-flex justify-content-end">
-                            <input type="text" value="<%= idchatt%>" name="idcha" hidden/>
-                            <input type="text" value="<%= idcartt%>" name="idcar" hidden/>
-                            <div class="col-sm-11 ">
-                                <input type="text" placeholder="Mensaje..." name="msje" class="form-control "/>
-                                
-                            </div>
-                            <div class="col-sm-1">
-                               <button type="submit" class="btn btn-info btn-block">Enviar</button>
-                            </div>
-                </div>
-            </form>
-            <%
-              HttpSession sesion = request.getSession();
-              String idus = (String)sesion.getAttribute("usuario");
-
-              if(idus.equals("Administrador"))
-              {
-            %>
-            <form action="sbmtPrs" method="POST" enctype="multipart/form-data">
-                <div class="row align-bottom d-flex justify-content-end">
-                            <input type="text" value="<%= idchatt%>" name="idcha2" hidden/>
-                            <input type="text" value="<%= idcartt%>" name="idcar2" hidden/>
-                            <div class="col-sm-3 ">
-                                <input type="text" placeholder="Presupuesto..." name="presup" class="form-control "/>
-                                
-                            </div>
-                            <div class="col-sm-1">
-                               <button type="submit" class="btn btn-danger btn-block"><i class="fas fa-dollar-sign"></i></button>
-                            </div>
-                </div>
-            </form>
-            <%
-               } 
-            %>
-        </div>
-    </div>
-    <!-- Fin del chat -->
-  
-
+			<ul class="list-group">
+                            <%
+                                for(Chat c : lsC)
+                                {
+                            %>
+					<li class="list-group-item list-group-item-secondary">
+						<div class="row">
+                                                    <h5><%= c.getNombre()%></h5>
+						</div>
+					</li>
+					<li class="list-group-item">
+						<div class="row d-flex justify-content-end">
+                                                    <%
+                                                    int idCart= c.getIdcarrito();
+                                                    %>
+                                                    <a class="btn btn-primary" href="goChat?idcart=<%=idCart%>"><i class="far fa-comments"></i>conversacion</a>
+						</div>
+					</li>	
+                            <%
+                                }
+                            %>
+			</ul>
+    </div> 
+    
+    <!-- Fin de lista de Chat -->
+    
+    
     <!-- Modal -->
     <!-- login -->
 	<div class="modal fade" id="modalLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

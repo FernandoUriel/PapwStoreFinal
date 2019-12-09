@@ -86,7 +86,7 @@
                                            
                                     %>  
                                         <li class="nav-item">
-                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="...">
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="..."style="max-width:30px;">
                                         </li>
                                         <li class="nav-item">
                                                      <a class="navbar-brand" href="#" ><%=nUsuario%></a>
@@ -132,11 +132,12 @@
         for(producto lib : listpro){
     %>
     <div class="container">
+        <form action="action" id="formCompra"></form>
 		<table class="table table-hover table-condensed">
 			<thead>
 				<tr>
 					<th >Producto</th>
-					
+					<th >Precio</th>
 					<th >Cantidad</th>
 					
 					<th ></th>
@@ -147,7 +148,7 @@
 					<td data-th="Product">
 						<div class="row">
 							<div class="col-sm-2 hidden-xs">
-								<img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" alt="..." class="img-responsive" id="imgcart">
+								<img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" alt="..." class="img-responsive" id="imgcart" >
 							</div>
 								<div class="col-sm-10">
 									<h4 id="productTitle" class="nomargin"><%= lib.getNombre()%></h4>
@@ -155,9 +156,20 @@
 								</div>
 							</div>
 					</td>
-						
+                                        <%
+                                            int precio= lib.getPrecio();
+                                            if(precio!=0){
+                                        %>
+                                        <td data-th="Price" name="precio" form="formCompra"><%= lib.getPrecio() %></td>
+                                        <%
+                                            }else{
+                                        %>
+                                        <td data-th="Price">No definido</td>
+                                        <%
+                                            }
+                                        %>
 						<td data-th="Quantity">
-								<input type="number" class="form-control text-center" value="1">
+								<input type="number" form="formCompra" name="proCant"class="form-control text-center" value="1">
 						</td>
 					
 						<td class="actions" data-th="">
@@ -166,16 +178,47 @@
 						</td>
 				</tr>
 			</tbody>
-			<tfoot>
-				<tr>
-					<td><a href="dashboard" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
+                       
+			<tfoot> 
+                              
+                            <tr> 	
+                                    <td><a href="dashboard" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
+                                        
+                                        <%
+                                            int precio2= lib.getPrecio();
+                                            if(precio!=0){
+                                        %>
+                                        <td><a href="#" class="btn btn-secondary btn-sm"><i class="fas fa-comment-dollar" disabled></i>Presupuesto</a></td>
+                                        <%
+                                            }else{
+                                        %>
                                         <td><a href="goChat?idcart=<%= lib.getIdCarrito()%>" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
+                                        <%
+                                            }
+                                        %>
 					<td colspan="1" class="hidden-xs"></td>
+                                       
+                                        <td class="hidden-xs text-center"><strong><%= lib.getPrecio()%></strong></td>
+                                        
+                                        <%
+                                            int precio3= lib.getPrecio();
+                                            if(precio!=0){
+                                        %>
+                                            
+                                                <td><a href="#" class="btn btn-success"><i class="fas fa-dollar-sign"></i>Comprar</a></td>
+                                            
+                                        <%
+                                            }else{
+                                        %>
 					
-					
+					<%
+                                            }
+                                        %>
 					
 				</tr>
+                                
 			</tfoot>
+                        
 		</table>
 	</div>
         <%

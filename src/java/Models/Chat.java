@@ -16,18 +16,28 @@ public class Chat {
     private int idadmin;
     private int idproducto;
     private int idcarrito;
+    private String nombre;
 
     public Chat() {
     }
     
     
 
-    public Chat(int idchat, int idusuario, int idadmin, int idproducto, int idcarrito) {
+    public Chat(int idchat, int idusuario, int idadmin, int idproducto, int idcarrito, String nombre) {
         this.idchat = idchat;
         this.idusuario = idusuario;
         this.idadmin = idadmin;
         this.idproducto = idproducto;
         this.idcarrito = idcarrito;
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public int getIdchat() {

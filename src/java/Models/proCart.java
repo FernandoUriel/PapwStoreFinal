@@ -14,6 +14,7 @@ public class proCart {
     private int idcarrito;
     private int idproducto;
     private int idusuario;
+    private int pres;
 
     public proCart() {
     }
@@ -21,6 +22,14 @@ public class proCart {
     public proCart(int idproducto, int idusuario) {
         this.idproducto = idproducto;
         this.idusuario = idusuario;
+    }
+
+    public int getPres() {
+        return pres;
+    }
+
+    public void setPres(int pres) {
+        this.pres = pres;
     }
 
     public int getIdcarrito() {

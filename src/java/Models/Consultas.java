@@ -548,8 +548,10 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,idcarrito from producto " +
-                "INNER JOIN carrito ON producto.idproducto = carrito.idproducto AND carrito.idusuario = ?";
+            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,carrito.idcarrito,preciosugerido from producto " +
+                "INNER JOIN carrito ON carrito.idproducto = producto.idproducto "+
+                "INNER JOIN chat ON chat.idcarrito=carrito.idcarrito "+
+                "WHERE carrito.idusuario = ?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idUsuario);
             rs= pst.executeQuery();
@@ -561,7 +563,8 @@ public class Consultas extends Conexion{
             String desc = rs.getString("descripcion");
             byte[] image = rs.getBytes("imagen1");
             int idcart = rs.getInt("idcarrito");
-            producto productoDash = new producto(nombre,desc,image,idpro,idcart);
+            int presu = rs.getInt("preciosugerido");
+            producto productoDash = new producto(nombre,desc,image,idpro,idcart,presu);
             listaproducto.add(productoDash);
             
             }
@@ -850,30 +853,28 @@ public class Consultas extends Conexion{
        return false;
     }
      
-      public List<Chat> getChats(int idChat){
+      public List<Chat> getChats(){
         List<Chat> listChats = new ArrayList<Chat>();
-        int orden=2;
         PreparedStatement pst = null;
         ResultSet rs = null;
         
         try {
            
-            String consulta = "select mensaje, horamsj, idmensaje, mensaje.idusuario from mensaje " +
-                "INNER JOIN chat ON chat.idchat = mensaje.idchat WHERE chat.idchat = ? "+
-                "ORDER BY ? ASC";
+            String consulta = "select idchat, idusuario, idadmin, chat.idproducto, idcarrito, nombre from chat "
+                    +"INNER JOIN producto ON producto.idproducto = chat.idproducto";
             pst = getConexion().prepareStatement(consulta);
-            pst.setInt(1, idChat);
-            pst.setInt(2, orden);
             rs= pst.executeQuery();
             
             while(rs.next())
             {
-            String mensaje = rs.getString("mensaje");
-            String hora = rs.getString("horamsj");
-            int idmsj = rs.getInt("idmensaje");
-            int idUsu = rs.getInt("idusuario");
-            //Chat chat = new Mensaje(mensaje,hora,idmsj,idUsu,idChat);
-            //listChats.add(chat);
+            int idchat = rs.getInt("idchat");
+            int idusu = rs.getInt("idusuario");
+            int idadmin = rs.getInt("idadmin");
+            int idprodu = rs.getInt("idproducto");
+            int idcarrito = rs.getInt("idcarrito");
+            String nompro= rs.getString("nombre");
+            Chat chat = new Chat(idchat,idusu,idadmin,idprodu,idcarrito,nompro);
+            listChats.add(chat);
             
             }
             
@@ -893,13 +894,42 @@ public class Consultas extends Conexion{
     
     }
       
+      public boolean addPrs(int idchat, int Pres){
+          PreparedStatement pst = null;
+        try {
+           
+                  
+           String consulta = "update chat SET preciosugerido = ? " +
+                                "WHERE idchat = ?";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, Pres);
+           pst.setInt(2, idchat);
+          
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+        return false;
+    }
+      
     public static void main(String[] args) {
         
         Consultas co = new Consultas();
         Consultas co2 = new Consultas();
         //proCart procart = co.getCarPro(1);
         //producto pro = co.productoSearch(20);
-        List<Mensaje> msjs = co.getMsj(1);
+        //List<Mensaje> msjs = co.getMsj(2);
+        //List<Chat> chat = co2.getChats();
+        List<producto> pro = co.cartShow(9);
         
        //List<producto> listb = co.proEnVenta();
         
@@ -924,10 +954,21 @@ public class Consultas extends Conexion{
         System.out.println(pro.getIdcarrito());
         System.out.println(pro.getIdproducto());*/
        
-       for( Mensaje mj : msjs)
+       for( producto ls : pro)
        {
-           System.out.println(mj.getMensaje());
+           System.out.println(ls.getNombre());
+           System.out.println(ls.getDescripcion());
+           System.out.println(ls.getIdproducto());
+           System.out.println(ls.getIdCarrito());
+           System.out.println(ls.getPrecio());
+           System.out.println("---------------");
        }
+       
+       /*for( Chat c : chat)
+       {
+           System.out.println(c.getIdcarrito());
+       }*/
+       
       
             
     }
