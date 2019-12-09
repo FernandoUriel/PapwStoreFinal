@@ -37,6 +37,15 @@ public class producto {
         this.idCarrito = idCarrito;
     }
     
+    public producto(String nombre, String descripcion, byte[] imagen, int idproducto, int idCarrito) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        //this.precio = precio;
+        this.imagen = imagen;
+        this.idproducto = idproducto;
+        this.idCarrito = idCarrito;
+    }
+    
     
 
     public producto(String nombre, String descripcion, String categoria, byte[] imagen) {
@@ -69,13 +78,7 @@ public class producto {
         this.idproducto = idproducto;
     }
 
-    public producto(String nombre, String descripcion, byte[] imagen, int idproducto, int idCarrito) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.imagen = imagen;
-        this.idproducto = idproducto;
-        this.idCarrito = idCarrito;
-    }
+    
 
     public int getIdCarrito() {
         return idCarrito;

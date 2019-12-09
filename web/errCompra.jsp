@@ -1,16 +1,14 @@
+<%@page import="Models.Chat"%>
+<%@page import="Models.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
 <%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    List<producto> listpro;
     String nUsuario="";
-    String isAdmin="";            
-     listpro = (List <producto>) request.getAttribute("pro_cart");                    
-    
-   
-   
-                    
+    String isAdmin="";
+    int cnC =(Integer) request.getAttribute("uni");
+    int unP =(Integer) request.getAttribute("uniPro");
 %>
 
 <!DOCTYPE html>
@@ -86,7 +84,7 @@
                                            
                                     %>  
                                         <li class="nav-item">
-                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="..."style="max-width:30px;">
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px" height="30px" class="card-img-top" alt="...">
                                         </li>
                                         <li class="nav-item">
                                                      <a class="navbar-brand" href="#" ><%=nUsuario%></a>
@@ -127,117 +125,20 @@
 
 	<!-- fin navbar -->
         
-    <!-- Carro -->
-    <%
-        for(producto lib : listpro){
-            
-            
-    %>
+    <!-- Lista de chat -->
+    
     <div class="container">
-        <form action="compraSv" method="POST" id="formCompra" enctype="multipart/form-data">
-		<table class="table table-hover table-condensed">
-			<thead>
-				<tr>
-					<th >Producto</th>
-					<th >Precio</th>
-					<th >Cantidad</th>
-					
-					<th ></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td data-th="Product">
-						<div class="row">
-							<div class="col-sm-2 ">
-								<img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" alt="..." class="img-responsive" id="imgcart" >
-							</div>
-								<div class="col-md-10">
-									<h4 id="productTitle" class="nomargin"><%= lib.getNombre()%></h4>
-									<p class="d-inline-block" id="productDetail"><%= lib.getDescripcion()%></p>
-								</div>
-							</div>
-					</td>
-                                        <%
-                                            int precio= lib.getPrecio();
-                                            if(precio!=0){
-                                        %>
-                                        <td data-th="Price" name="precio" form="formCompra"><%= lib.getPrecio() %></td>
-                                        <%
-                                            }else{
-                                        %>
-                                        <td data-th="Price">No definido</td>
-                                        <%
-                                            }
-                                        %>
-						<td>
-							<input type="number"  name="proCant"class="form-control text-center" value="1">
-						</td>
-					
-						<td class="actions" data-th="">
-							<button class="btn btn-info btn-sm"><i class="fas fa-sync-alt"></i></button>
-							<a class="btn btn-danger btn-sm" href="delCart?idcart=<%= lib.getIdCarrito()%>"><i class="far fa-trash-alt"></i></a>								
-						</td>
-				</tr>
-			</tbody>
-                       
-			<tfoot> 
-                              
-                            <tr> 	
-                                    <td><a href="dashboard" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Seguir comprando</a></td>
-                                        
-                                        <%
-                                            int precio2= lib.getPrecio();
-                                            if(precio!=0){
-                                        %>
-                                        <td><a href="#" class="btn btn-secondary btn-sm"><i class="fas fa-comment-dollar" disabled></i>Presupuesto</a></td>
-                                        <%
-                                            }else{
-                                        %>
-                                        <td><a href="goChat?idcart=<%= lib.getIdCarrito()%>" class="btn btn-primary btn-sm"><i class="fas fa-comment-dollar"></i>Presupuesto</a></td>
-                                        <%
-                                            }
-                                        %>
-					<td colspan="1" class="hidden-xs"></td>
-                                       
-                                        <td class="hidden-xs text-center"><strong><%= lib.getPrecio()%></strong></td>
-                                        
-                                        <%
-                                            int precio3= lib.getPrecio();
-                                            if(precio!=0){
-                                        %>
-                                                <td>
-                                                    <select class="custom-select"name="metodoP">
-                                                        <option value="1">Tarjeta</option>
-                                                        <option value="2">Efectivo</option>
-                                                    </select>
-                                                    <input type="text" name="idcarrito"value="<%= lib.getIdCarrito()%>" hidden>
-                                                    <input type="text" name="precioP"value="<%= lib.getPrecio()%>" hidden>
-                                                    
-                                                </td>
-                                                <td><button type="submit" href="#" class="btn btn-success"><i class="fas fa-dollar-sign"></i>Comprar</button></td>
-                                            
-                                        <%
-                                            }else{
-                                        %>
-					
-					<%
-                                            }
-                                        %>
-					
-				</tr>
-                                
-			</tfoot>
-                        
-		</table>
-            </form>
-	</div>
-        <%
-            }
-        %>	
-    <!-- Fin Carro -->
-
-
+        <h2 class="text-danger">Error en la compra</h2>
+        
+        <h4 class="text-dark">Esta intentando comprar mas unidades que las restantes en stock</h4>
+        <h4>Hay<p class="text-sucess"><%= unP%></p> y usted esta intentando comprar <p class="text-warning"><%= cnC%></p></h4>
+        
+			
+    </div> 
+    
+    <!-- Fin de lista de Chat -->
+    
+    
     <!-- Modal -->
     <!-- login -->
 	<div class="modal fade" id="modalLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

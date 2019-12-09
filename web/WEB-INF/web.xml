@@ -84,6 +84,10 @@
         <servlet-name>sbmtPrs</servlet-name>
         <servlet-class>Controller.sbmtPrs</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>compraSv</servlet-name>
+        <servlet-class>Controller.compraSv</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -163,6 +167,10 @@
     <servlet-mapping>
         <servlet-name>sbmtPrs</servlet-name>
         <url-pattern>/sbmtPrs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>compraSv</servlet-name>
+        <url-pattern>/compraSv</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

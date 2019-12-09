@@ -516,14 +516,16 @@ public class Consultas extends Conexion{
     
       public boolean addCart(int idUsuario, int idProducto){
        PreparedStatement pst = null;
+       int est=0;
        try {
            boolean admin = false;
          
-           String consulta = "insert into carrito(idproducto, idusuario) " +
-                             "values (?,?)";
+           String consulta = "insert into carrito(idproducto, idusuario, estado) " +
+                             "values (?,?,?)";
            pst = getConexion().prepareStatement(consulta);
            pst.setInt(1, idProducto);
            pst.setInt(2, idUsuario);
+           pst.setInt(3, est);
        
            
            if(pst.executeUpdate()==1){
@@ -544,16 +546,17 @@ public class Consultas extends Conexion{
     public List<producto> cartShow(int idUsuario){
         List<producto> listaproducto = new ArrayList<producto>();
         PreparedStatement pst = null;
+        int est=0;
         ResultSet rs = null;
         
         try {
            
-            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,carrito.idcarrito,preciosugerido from producto " +
+            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,carrito.idcarrito,carrito.preciosugerido from producto " +
                 "INNER JOIN carrito ON carrito.idproducto = producto.idproducto "+
-                "INNER JOIN chat ON chat.idcarrito=carrito.idcarrito "+
-                "WHERE carrito.idusuario = ?";
+                "WHERE carrito.idusuario = ? AND carrito.estado=?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idUsuario);
+            pst.setInt(2, est);
             rs= pst.executeQuery();
             
             while(rs.next())
@@ -588,11 +591,13 @@ public class Consultas extends Conexion{
     public boolean cartDel(int idCart){
         PreparedStatement pst = null;
         ResultSet rs = null;
+        int est=1;
     
        try {
-            String consulta = "DELETE FROM carrito WHERE idcarrito=?";
+            String consulta = "UPDATE carrito SET estado=? WHERE idcarrito=?";
             pst = getConexion().prepareStatement(consulta);
-            pst.setInt(1, idCart);
+            pst.setInt(1, est);
+            pst.setInt(2, idCart);
             if(pst.executeUpdate()==1){
                return true;
            }
@@ -899,6 +904,97 @@ public class Consultas extends Conexion{
         try {
            
                   
+           String consulta = "update carrito SET preciosugerido = ? " +
+                                "WHERE idcarrito = ?";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, Pres);
+           pst.setInt(2, idchat);
+          
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+        return false;
+    }
+      
+     public int cantPro(int idProducto){
+        int canPro=0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+
+             String consulta = "select unidades from producto where idproducto =?";
+             pst = getConexion().prepareStatement(consulta);
+             pst.setInt(1, idProducto);
+             rs= pst.executeQuery();
+
+             while(rs.next())
+             {
+                 canPro = rs.getInt("unidades");
+             }
+
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+             try {
+                 if(getConexion() != null) getConexion().close();
+                 if(pst != null) pst.close();
+                 if(rs != null) rs.close();
+             } catch (SQLException e) {
+                 System.out.println("Error " +e);
+             }
+         }
+       return canPro;
+      
+    
+    } 
+     
+     public int proxCart(int cart){
+        int canPro=0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+
+             String consulta = "select idproducto from carrito where idcarrito =?";
+             pst = getConexion().prepareStatement(consulta);
+             pst.setInt(1, cart);
+             rs= pst.executeQuery();
+
+             while(rs.next())
+             {
+                 canPro = rs.getInt("idproducto");
+             }
+
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+             try {
+                 if(getConexion() != null) getConexion().close();
+                 if(pst != null) pst.close();
+                 if(rs != null) rs.close();
+             } catch (SQLException e) {
+                 System.out.println("Error " +e);
+             }
+         }
+       return canPro;
+      
+    
+    }
+     
+     public boolean addCompra(int idchat, int Pres){
+          PreparedStatement pst = null;
+        try {
+           
+                  
            String consulta = "update chat SET preciosugerido = ? " +
                                 "WHERE idchat = ?";
            pst = getConexion().prepareStatement(consulta);
@@ -920,18 +1016,82 @@ public class Consultas extends Conexion{
        }
         return false;
     }
-      
+     
+     public boolean addCompraH(int precio, int unidades, int formapago,int idusuario, int idproducto){
+       PreparedStatement pst = null;
+       try {
+          
+         
+           String consulta = "insert into compra(fecha, precio, unidades, formapago, idusuario, idproducto) " +
+                             "values (NOW(),?,?,?,?,?)";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, precio);
+           pst.setInt(2, unidades);
+           pst.setInt(3, formapago);
+           pst.setInt(4, idusuario);
+           pst.setInt(5, idproducto);
+       
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+       return false;
+   }
+     
+     public boolean updCnt(int nCant, int idProducto){
+          PreparedStatement pst = null;
+        try {
+           
+                  
+           String consulta = "update producto SET unidades=? " +
+                                "WHERE idproducto = ?";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, nCant);
+           pst.setInt(2, idProducto);
+          
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+        return false;
+    }
+     
     public static void main(String[] args) {
         
         Consultas co = new Consultas();
-        Consultas co2 = new Consultas();
+        
+        /*Consultas co2 = new Consultas();
+        int unidades = 8;
+        int proid = co.proxCart(1);
+        int unPro = co2.cantPro(proid);*/
+        
+        
+        //Consultas co2 = new Consultas();
         //proCart procart = co.getCarPro(1);
         //producto pro = co.productoSearch(20);
         //List<Mensaje> msjs = co.getMsj(2);
         //List<Chat> chat = co2.getChats();
-        List<producto> pro = co.cartShow(9);
+        //List<producto> pro = co.cartShow(9);
         
-       //List<producto> listb = co.proEnVenta();
+       List<producto> listb = co.cartShow(8);
         
        /*for(producto lib : listb){
            System.out.println(lib.getNombre());
@@ -954,7 +1114,7 @@ public class Consultas extends Conexion{
         System.out.println(pro.getIdcarrito());
         System.out.println(pro.getIdproducto());*/
        
-       for( producto ls : pro)
+       /*for( producto ls : pro)
        {
            System.out.println(ls.getNombre());
            System.out.println(ls.getDescripcion());
@@ -962,14 +1122,18 @@ public class Consultas extends Conexion{
            System.out.println(ls.getIdCarrito());
            System.out.println(ls.getPrecio());
            System.out.println("---------------");
-       }
+       }*/
+       
+        
        
        /*for( Chat c : chat)
        {
            System.out.println(c.getIdcarrito());
        }*/
+       for(producto p : listb){
        
-      
+       System.out.println(p.getNombre());
+       }
             
     }
 }
