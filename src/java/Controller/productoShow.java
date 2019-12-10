@@ -41,6 +41,7 @@ public class productoShow extends HttpServlet {
         Consultas co2 = new Consultas();
         Consultas co3 = new Consultas();
         Consultas co4 = new Consultas();
+         Consultas co7 = new Consultas();
         
         String loCompro="";
         
@@ -49,6 +50,8 @@ public class productoShow extends HttpServlet {
         
         Consultas co5= new Consultas();
         Consultas co6= new Consultas();
+        
+        int cantPro = co7.cantPro(idpro);
                
         int idUser = co5.getIdUser(idus);
         
@@ -67,6 +70,7 @@ public class productoShow extends HttpServlet {
         request.setAttribute("cntDislikes", dislikes);
         request.setAttribute("compro", loCompro);
         request.setAttribute("lstComentario", lstCome);
+        request.setAttribute("cantProducto", cantPro);
         
         request.getRequestDispatcher("producto.jsp").forward(request, response);
       

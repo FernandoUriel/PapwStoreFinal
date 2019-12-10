@@ -489,8 +489,9 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select idproducto,producto.nombre, descripcion, imagen1 from producto " +
-                "WHERE producto.idcategoria=?";
+            //String consulta = "select idproducto,producto.nombre, descripcion, imagen1 from producto " +
+            //    "WHERE producto.idcategoria=?";
+            String consulta ="call cateSearch(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, catid);
             rs= pst.executeQuery();
@@ -528,7 +529,7 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
            
-            String consulta = "select avatar from usuario where username=?";
+            String consulta = "call getImagenUsuario(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setString(1, usuario);
             rs= pst.executeQuery();
@@ -558,7 +559,8 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
            
-            String consulta = "select idusuario from usuario where username=?";
+            //String consulta = "select idusuario from usuario where username=?";
+            String consulta = "call getIdUser(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setString(1, usuario);
             rs= pst.executeQuery();
@@ -619,9 +621,10 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select producto.idproducto, nombre, descripcion, imagen1,carrito.idcarrito,carrito.preciosugerido from producto " +
-                "INNER JOIN carrito ON carrito.idproducto = producto.idproducto "+
-                "WHERE carrito.idusuario = ? AND carrito.estado=?";
+            //String consulta = "select producto.idproducto, nombre, descripcion, imagen1,carrito.idcarrito,carrito.preciosugerido from producto " +
+            //    "INNER JOIN carrito ON carrito.idproducto = producto.idproducto "+
+            //    "WHERE carrito.idusuario = ? AND carrito.estado=?";
+            String consulta ="call cartShow(?,?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idUsuario);
             pst.setInt(2, est);
@@ -720,7 +723,8 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
 
-             String consulta = "select idchat from chat WHERE chat.idcarrito = ?";
+             //String consulta = "select idchat from chat WHERE chat.idcarrito = ?";
+             String consulta = "call chatExist(?)";
              pst = getConexion().prepareStatement(consulta);
              pst.setInt(1, idCart);
              rs= pst.executeQuery();
@@ -877,7 +881,8 @@ public class Consultas extends Conexion{
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            String consulta = "select * from chat where idcarrito = ?";
+            //String consulta = "select * from chat where idcarrito = ?";
+            String consulta = "call isChat(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idCart);
            
@@ -933,8 +938,9 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select idchat, idusuario, idadmin, chat.idproducto, idcarrito, nombre from chat "
-                    +"INNER JOIN producto ON producto.idproducto = chat.idproducto";
+            //String consulta = "select idchat, idusuario, idadmin, chat.idproducto, idcarrito, nombre from chat "
+            //        +"INNER JOIN producto ON producto.idproducto = chat.idproducto";
+            String consulta="call getChats()";
             pst = getConexion().prepareStatement(consulta);
             rs= pst.executeQuery();
             
@@ -1000,7 +1006,8 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
 
-             String consulta = "select unidades from producto where idproducto =?";
+             //String consulta = "select unidades from producto where idproducto =?";
+             String consulta = "call canPro(?)";
              pst = getConexion().prepareStatement(consulta);
              pst.setInt(1, idProducto);
              rs= pst.executeQuery();
@@ -1151,9 +1158,10 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
-                    "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
-                    "WHERE compra.idusuario = ?";
+            //String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
+            //        "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
+            //        "WHERE compra.idusuario = ?";
+            String consulta ="call shwCompra(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idusuario);
            

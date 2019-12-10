@@ -3,7 +3,16 @@
     Created on : 25/11/2019, 10:12:30 PM
     Author     : fernandourg
 --%>
-
+<%
+    //List<producto> listpro;
+    String nUsuario="";
+    //String nUsuario="";
+    String isAdmin="";
+                
+   // listpro = (List <producto>) request.getAttribute("libro_rate");                    
+   
+                    
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -83,13 +92,67 @@
 			 </button>
 			 <div class="collapse navbar-collapse" id="navbarResponsive">
 			 	<ul class="navbar-nav ml-auto">
+			 		<%
+                                        if(null == session.getAttribute("usuario")){
+                                    %>
 			 		<li class="nav-item">
 						 <a class="navbar-brand" href="#" data-toggle="modal" data-target="#modalLogIn">Iniciar Sesion</a>
 						 	<span class="sr-only">(current)</span>
 					</li>
+                                    <%
+                                           }else{
+                                           
+                                           nUsuario=(String)session.getAttribute("usuario");
+                                           
+                                    %>  
+                                        <li class="nav-item">
+                                        <img src="getUserImage?userName=<%= nUsuario%>" width="30px"  height="30px" class="card-img-top" alt="..." style="max-width:30px; ">
+                                        </li>
+                                        <li class="nav-item">
+                                                     <a class="navbar-brand" href="#" ><%=nUsuario%></a>
+                                                            <span class="sr-only">(current)</span>
+                                        </li>
+                                        
+                                            
+                                        
+                                    <%
+                                        }
+                                    %>
+                                    <%
+                                        if(session.getAttribute("usuario")!= null){
+                                        isAdmin=(String)session.getAttribute("usuario");
+                                        if(isAdmin.equals("Administrador")){
+                                            
+                                    %>
 					<li class="nav-item">
+						 <a class="navbar-brand" href="logOut">LogOut</a>
+					</li>
+                                        <li class="nav-item">
+						 <a class="navbar-brand" href="lstChatAd"><i class="fas fa-comments"></i></a>
+					</li>
+                                     <%
+                                         }
+                                        else{
+                                     %>
+                                     <li class="nav-item">
+						 <a class="navbar-brand" href="logOut">LogOut</a>
+					</li>
+                                        <li class="nav-item">
+						 <a class="navbar-brand" href="shwCart"><i class="fas fa-shopping-cart"></i></a>
+					</li>
+                                        <li class="nav-item">
+						 <a class="navbar-brand" href="shwHCompra"><i class="fas fa-shopping-bag"></i></a>
+					</li>
+                                     <%
+                                             }
+                                        }else if(session.getAttribute("usuario")== null){
+                                    %>
+                                         <li class="nav-item">
 						 <a class="navbar-brand" href="registro.jsp">Registrarse</a>
 					</li>
+                                    <%
+                                        }
+                                    %>
 				</ul>
 			<!-- Search form -->
 			<form class="form-inline">

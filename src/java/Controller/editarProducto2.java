@@ -56,7 +56,7 @@ public class editarProducto2 extends HttpServlet {
         int categoria = Integer.parseInt(request.getParameter("categoria"));
         Part file = request.getPart("imagen1");
         Part file2 = request.getPart("imagen2");
-        Part file3 = request.getPart("imagen2");
+        Part file3 = request.getPart("imagen3");
         int estado = Integer.parseInt(request.getParameter("estado"));
         int idProducto = Integer.parseInt(request.getParameter("idProducto"));
         
