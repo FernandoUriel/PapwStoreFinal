@@ -126,6 +126,13 @@ p#infoProduct{
 h5 small{
 	color:#337ab7
 }
+.user_name{
+    font-size:14px;
+    font-weight: bold;
+}
+.comments-list .media{
+    border-bottom: 1px dotted #ccc;
+}
 
 h3{
 	margin-top:0px;

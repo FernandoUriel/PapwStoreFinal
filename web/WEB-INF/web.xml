@@ -104,6 +104,10 @@
         <servlet-name>valoracion</servlet-name>
         <servlet-class>Controller.valoracion</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>comentar</servlet-name>
+        <servlet-class>Controller.comentar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -203,6 +207,10 @@
     <servlet-mapping>
         <servlet-name>valoracion</servlet-name>
         <url-pattern>/valoracion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>comentar</servlet-name>
+        <url-pattern>/comentar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

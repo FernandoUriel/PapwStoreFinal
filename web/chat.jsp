@@ -201,7 +201,7 @@
                             <input type="text" value="<%= idchatt%>" name="idcha2" hidden/>
                             <input type="text" value="<%= idcartt%>" name="idcar2" hidden/>
                             <div class="col-sm-3 ">
-                                <input type="text" placeholder="Presupuesto..." name="presup" class="form-control "/>
+                                <input type="text" placeholder="Presupuesto..." name="presup" class="form-control "required/>
                                 
                             </div>
                             <div class="col-sm-1">

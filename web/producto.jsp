@@ -3,6 +3,7 @@
     Created on : 26/11/2019, 06:07:03 AM
     Author     : fernandourg
 --%>
+<%@page import="Models.Comentario"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
 <%@page import="java.util.ArrayList"%>
@@ -17,8 +18,10 @@
     int likes =(Integer) request.getAttribute("cntLikes");
     int dislikes =(Integer) request.getAttribute("cntDislikes");
     int idpro= listpro.getIdproducto();
+    String loCompro=(String) request.getAttribute("compro");
     
-                    
+    List<Comentario> lstComentario = (List<Comentario>) request.getAttribute("lstComentario");
+                  
 %>
 <!DOCTYPE html>
 <html>
@@ -133,18 +136,33 @@
 
 	<div class="container">
         	<div class="row">
-               <div class="col-xs-4 item-photo">
-                   <img id="imgProduct" src="getProductoImage?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
-                </div>
+                    <div class="row">
+                        <div class="col-xs-4 item-photo">
+                            <img id="imgProduct" src="getProductoImage?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
+                        </div>
+                    </div>
                 <div class="col-xs-4 item-photo">
                     <% String temp = listpro.getVideo();
+                    
+                        if(temp==null){
+                        
+                        %>
+                        <%}
+                        
+                        else{
+                        
                    
                      String fileName = this.getServletContext().getRealPath("/VIDEOS");
                       String dir = "/PapwStore/VIDEOS/"+temp;
                     %>
+                    <div class="row">
                     <video width="400px" height="500px" controls>
                         <source src="<%=dir%>" type="video/mp4">
                     </video>
+                    </div>
+                        <%
+                        }
+                        %>
                 </div>
                 <div class="col-xs-5">
                     <!-- Datos del vendedor y titulo del producto -->
@@ -165,7 +183,10 @@
                             <input value="1" />
                             <div class="btn-plus"><span><i class="fas fa-plus"></i></span></div>
                         </div>
-                    </div>                
+                    </div>
+                    <%
+                        if(loCompro.equals("true")){
+                    %>
                     <form action="valoracion" method="GET" enctype="multipart/form-data">
                         <div class="row">
                             <input type="text" name="proID" value="<%= idpro%>" hidden/>
@@ -175,6 +196,22 @@
                         <label><%=dislikes%></label>
                         </div>
                     </form>
+                    <%
+                        }else{
+                    %>
+                    
+                    <form action="valoracion" method="GET" enctype="multipart/form-data">
+                        <div class="row">
+                            <input type="text" name="proID" value="<%= idpro%>" hidden/>
+                        <button type="submit" name="Like" class="btn btn-primary" disabled><i class="far fa-thumbs-up" ></i></button>
+                        <label><%=likes%></label>
+                        <button type="submit" name="Dislike"class="btn btn-primary" disabled><i class="far fa-thumbs-down" ></i></button>
+                        <label><%=dislikes%></label>
+                        </div>
+                    </form>
+                    <%
+                        }
+                    %>
                     <!-- Botones de compra -->
                     <div class="section">
                         <%
@@ -192,23 +229,84 @@
                         %>
                     </div>                                        
                 </div>                              
-        
-                <div class="col-xs-9">
-                    <ul class="menu-items">
-                        <li class="active">Detalle del producto</li>
-                        
-                    </ul>
-                    <div class="contenedor-info">
-                        <p id="infoProduct">
-                            <small>
-                      		<%= listpro.getDescripcion()%>	
-                            </small>
+                <div class="container">
+                    <div class="col-xs-9">
+                        <ul class="menu-items">
+                            <li class="active">Detalle del producto</li>
 
-                        </p>
-                        
+                        </ul>
+                        <div class="contenedor-info">
+                            <p id="infoProduct">
+                               
+                                    <%= listpro.getDescripcion()%>	
+                               
+                            </p>
+
+                        </div>
                     </div>
-                </div>		
+                </div>
             </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                      <div class="page-header">
+                        <h1>Comentarios </h1>
+                      </div>
+                        <%
+                        for(Comentario Comen :lstComentario){
+                        %>
+                        
+                            <div class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <h4><%= Comen.getNombre()%></h4>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5 class="float-right"><small><%= Comen.getFecha() %></small></h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                             <p><%= Comen.getComentario()%></p>
+                                        </div>
+                                    </div>
+                            </div>
+                         
+                       
+                        <%
+                         }
+                        %>
+                    </div>
+                </div>
+            </div>
+                           
+            <%
+                        if(loCompro.equals("true")){
+            %>
+            <div class row>
+                <div class="col-sm-9">
+                    <form action="comentar" method="POST" enctype="multipart/form-data">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comentario"required></textarea>
+                        <input type="text" name="idprodu" hidden value="<%=idpro%>"/>
+                        <input type="submit" value="Comentar"/>
+                    </form>
+                </div>      
+            </div>
+            <%
+                        }else{
+            %>
+            <div class row>
+                <div class="col-sm-9">
+                    <form>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="comentario"required disabled></textarea>
+                        <input type="submit" value="Comentar" disabled/>
+                    </form>
+                </div>      
+            </div>
+            <%
+                 }
+            %>
+            
         </div> 
 	<!-- Modal -->
 		<!-- login -->

@@ -1381,11 +1381,110 @@ public class Consultas extends Conexion{
        }
       
    }
+   
+    public boolean obComprado(int idusuario, int idproducto){
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            String consulta = "select	idusuario, idproducto from compra where idusuario = ? AND idproducto=?";
+            
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idusuario);
+            pst.setInt(2, idproducto);
+            rs = pst.executeQuery();
+            
+            if(rs.absolute(1)){
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+    return false;
+    }
+    
+    public boolean addComentario(int idUsuario, int idProducto, String Comentario){
+       PreparedStatement pst = null;
+       try {
+          
+         
+           String consulta = "insert into comentario(idusuario, idproducto, texto, fecha) " +
+                             "values (?,?,?,NOW())";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setInt(1, idUsuario);
+           pst.setInt(2, idProducto);
+           pst.setString(3, Comentario);
+           
+       
+           
+           if(pst.executeUpdate()==1){
+               return true;
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+           } catch (Exception e) {
+           }
+       }
+       return false;
+   }
+    
+    public List<Comentario> shwComentario(int idProducto){
+        List<Comentario> listCom = new ArrayList<Comentario>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+           
+            String consulta = "select usuario.username, comentario.fecha, texto from comentario " +
+                        "INNER JOIN usuario ON usuario.idusuario = comentario.idusuario " +
+                        "WHERE comentario.idproducto=?";
+                    
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idProducto);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String nombre = rs.getString("usuario.username");
+            String fecha = rs.getString("comentario.fecha");
+            String comentario = rs.getString("texto");
+            Comentario com = new Comentario(nombre,fecha,comentario);
+            listCom.add(com);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listCom;
+    
+    }
      
     public static void main(String[] args) {
         
-        //Consultas co = new Consultas();
-        //System.out.println(co.addLike(21, 9));
+        Consultas co = new Consultas();
+        
+        System.out.println(co.addComentario(9, 21, "Me gusto Mucho la figura"));
         
         /*Consultas co2 = new Consultas();
         int unidades = 8;

@@ -5,13 +5,11 @@
  */
 package Controller;
 
-import Models.Comentario;
 import Models.Consultas;
-import Models.producto;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +19,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author fernandourg
  */
-public class productoShow extends HttpServlet {
+@MultipartConfig(maxFileSize = 1000*1000*5, maxRequestSize = 1000*1000*25, fileSizeThreshold = 1000*1000)
+public class comentar extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,39 +35,6 @@ public class productoShow extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int idpro = Integer.parseInt(request.getParameter("idprod"));
-        Consultas co = new Consultas();
-        Consultas co2 = new Consultas();
-        Consultas co3 = new Consultas();
-        Consultas co4 = new Consultas();
-        
-        String loCompro="";
-        
-        HttpSession sesion = request.getSession();
-        String idus = (String)sesion.getAttribute("usuario");
-        
-        Consultas co5= new Consultas();
-        Consultas co6= new Consultas();
-               
-        int idUser = co5.getIdUser(idus);
-        
-        if(co4.obComprado(idUser, idpro)){
-            loCompro="true";
-        }else{
-            loCompro="false";
-        }
-        
-        int likes = co2.cntLikes(idpro);
-        int dislikes = co3.cntDislikes(idpro);
-        producto proS = co.productoSearch(idpro);
-        List<Comentario> lstCome=co6.shwComentario(idpro);
-        request.setAttribute("productoSh", proS);
-        request.setAttribute("cntLikes", likes);
-        request.setAttribute("cntDislikes", dislikes);
-        request.setAttribute("compro", loCompro);
-        request.setAttribute("lstComentario", lstCome);
-        
-        request.getRequestDispatcher("producto.jsp").forward(request, response);
       
     }
 
@@ -98,7 +64,22 @@ public class productoShow extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        int idPro = Integer.parseInt(request.getParameter("idprodu"));
+        String Comentario =request.getParameter("comentario");
+        
+        HttpSession sesion = request.getSession();
+        String idus = (String)sesion.getAttribute("usuario");
+        
+        Consultas co5= new Consultas();
+        Consultas co= new Consultas();
+               
+        int idUser = co5.getIdUser(idus);
+        
+        if(co.addComentario(idUser, idPro, Comentario)){
+            request.getRequestDispatcher("dashboard").forward(request, response);
+        }else{
+            request.getRequestDispatcher("index.html").forward(request, response);
+        }
     }
 
     /**
