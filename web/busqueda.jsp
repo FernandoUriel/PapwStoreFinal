@@ -1,39 +1,36 @@
-<%-- 
-    Document   : index
-    Author     : fernandourg
---%>
+<%@page import="Models.Chat"%>
+<%@page import="Models.Mensaje"%>
 <%@page import="java.util.List"%>
 <%@page import="Models.producto"%>
 <%@page import="java.util.ArrayList"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
-    List<producto> listpro;
-    List<producto> listpro2;
     String nUsuario="";
     String isAdmin="";
-                
-    listpro = (List <producto>) request.getAttribute("libro_rate");                    
-    listpro2 = (List <producto>) request.getAttribute("libro_date");
-                    
+    int cnC =(Integer) request.getAttribute("uni");
+    int unP =(Integer) request.getAttribute("uniPro");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover">
-	<title>Landing Page</title>
+	<title>Registrarse</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://kit.fontawesome.com/b26f182c55.js" crossorigin="anonymous"></script>
-        <script type="text/javascript">
-		$('.carousel').carousel()
-		$(document).ready(function(){
-
-		});
+        <script>
+	$(document).ready(function(){
+            //alert("todo cargado");
+           
+                               
+            
+           
+        });	
+	
 	</script>
 	
 </head>
@@ -57,6 +54,7 @@
 					   <span class="caret"></span>
 				   </a>
 				   <div class="dropdown-menu" aria-labelledby="dropdown_target">
+					   
 					   <a class="dropdown-item" href="catSearch?idcat=1">Smartphones</a>
 					   <div class="dropdown-divider"></div>
 					   <a class="dropdown-item" href="catSearch?idcat=3">Electronicos</a>
@@ -72,7 +70,7 @@
 			 </button>
 			 <div class="collapse navbar-collapse" id="navbarResponsive">
 			 	<ul class="navbar-nav ml-auto">
-                                    <%
+			 	<%
                                         if(null == session.getAttribute("usuario")){
                                     %>
 			 		<li class="nav-item">
@@ -137,7 +135,7 @@
 			<!-- Search form -->
 			<form class="form-inline">
 				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				<a href="busqueda.jsp" class="btn btn-light my-smn-0" type="submit"><i class="fas fa-search"></i></a>
+				<a href="advanced-search.html" class="btn btn-light my-smn-0" type="submit"><i class="fas fa-search"></i></a>
 				
 			</form>
 
@@ -146,89 +144,59 @@
 	
 
 	<!-- fin navbar -->
+        
+        <!-- Inicio busqueda Avanzada -->
 
-	<!-- carrusel -->
+    <h2 class="text-center text-primary">Busqueda Avanzada</h2>
+    <hr>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <h5 class="text-center text-dark">Criterio de busqueda</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                        value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        Nombre
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2"
+                        value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        Descripción
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3"
+                        value="option3">
+                    <label class="form-check-label" for="exampleRadios3">
+                        Categoria
+                    </label>
+                </div>
+            </div>
+             <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search..." name="criterio" required>
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary" placeholder="Buscar" value="Buscar"/>
+                </span>
+            </div>
+           
+    </div>
 
-	<div class="container">
-		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-			<ol class="carousel-indicators">
-			    <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-			    <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-			    <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-			</ol>
-			  <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img src="images/item.jpeg" class="d-block w-100" alt="...">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="images/item2.jpg" class="d-block w-100" alt="...">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="images/item3.png" class="d-block w-100" alt="...">
-			    </div>
-			  </div>
-			  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-			    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Previous</span>
-			  </a>
-			  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-			    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			    <span class="sr-only">Next</span>
-			  </a>
-			</div>
-	</div>
+    </form>
+    </div>
 
-	<!-- fin del carrusel -->
-	<div class="container">
-		<hr>
-		<p class=text-left>¡Quedan pocos!</p>
-		<!-- cards -->
-			<div class="row">
-                            <%
-                                 for(producto lib : listpro){
-                            %>
-				<div class="col-4">
-					<div class="card d-inline-block">
-                                            <img src="getProductoImage?idprod=<%= lib.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5  class="card-title"><%= lib.getNombre()%></h5>
-							<p class="card-text" maxlength="20"><%= lib.getDescripcion()%></p>
-                                                        <a href="productoShow?idprod=<%= lib.getIdproducto()%>" class="btn btn-primary">Detalles</a>
-							
-						</div>
-					</div>
-				</div>
-                            <%
-                                }
-                            %>		
-			</div>
-			<hr>
-			
-			<p class=text-left>Ultimo agregado</p>
-			<div class="row">
-                            <%
-                                 for(producto lib2 : listpro2){
-                            %>
-				<div class="col-4">
-					<div class="card d-inline-block">
-						<img src="getProductoImage?idprod=<%= lib2.getIdproducto()%>" width="200px" height="200px" class="card-img-top" alt="...">
-						<div class="card-body">
-							<h5  class="card-title"><%= lib2.getNombre()%></h5>
-							<p class="card-text" maxlength="20"><%= lib2.getDescripcion()%></p>
-							<a href="productoShow?idprod=<%= lib2.getIdproducto()%>" class="btn btn-primary">Detalles</a>
-							
-						</div>
-					</div>
-				</div>
-                             <%
-                                }
-                            %>	
-			</div>
-	</div>
-	<!-- fin cards -->
+    <!-- Fin busqueda Avanzada -->
 
-		<!-- Modal -->
-		<!-- login -->
+    
+    
+    <!-- Modal -->
+    <!-- login -->
 	<div class="modal fade" id="modalLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -270,6 +238,9 @@
 
 	
 
+
 		<!-- fin modal -->
 </body>
 </html>
+
+

@@ -116,6 +116,10 @@
         <servlet-name>getProductoImage3</servlet-name>
         <servlet-class>Controller.getProductoImage3</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>busquedaAvanzada</servlet-name>
+        <servlet-class>Controller.busquedaAvanzada</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -227,6 +231,10 @@
     <servlet-mapping>
         <servlet-name>getProductoImage3</servlet-name>
         <url-pattern>/getProductoImage3</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>busquedaAvanzada</servlet-name>
+        <url-pattern>/busquedaAvanzada</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

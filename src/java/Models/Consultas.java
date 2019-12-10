@@ -87,14 +87,15 @@ public class Consultas extends Conexion{
        List<producto> listaproducto = new ArrayList<producto>();
        
         try {
-            int timh1 = 4;
+            int timh1 = 1;
             int timh2 = 3;
             int timh3 = 1;
             
-            String consulta ="select producto.idproducto, nombre,descripcion, valoracion, imagen1,estado from producto " +
-                "INNER JOIN valoracion ON producto.idproducto = valoracion.idproducto and estado=? "+
-                "ORDER BY ? DESC " +
-                "LIMIT ?";
+            String consulta ="select unidades,producto.idproducto, nombre,descripcion, imagen1,estado from producto " +
+                    "WHERE estado =? " +
+                    "ORDER BY ? ASC " +
+                    "LIMIT ?";
+            //String consulta="call dashPocos2(?,?,?)";
             pst = getConexion().prepareStatement(consulta);
             //pst.setString(1, valora_id);
             pst.setInt(1, timh3);
@@ -266,7 +267,8 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
            
-            String consulta = "select imagen1 from producto where idproducto=?";
+            //String consulta = "select imagen1 from producto where idproducto=?";
+            String consulta ="call getproImage(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idProducto);
             rs= pst.executeQuery();
