@@ -8,13 +8,17 @@ package Controller;
 import Models.Consultas;
 import Utils.FilesUtils;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -51,8 +55,17 @@ public class editarProducto2 extends HttpServlet {
         int unidades1 = Integer.parseInt(request.getParameter("unidades"));
         int categoria = Integer.parseInt(request.getParameter("categoria"));
         Part file = request.getPart("imagen1");
+        Part file2 = request.getPart("imagen2");
+        Part file3 = request.getPart("imagen2");
         int estado = Integer.parseInt(request.getParameter("estado"));
         int idProducto = Integer.parseInt(request.getParameter("idProducto"));
+        
+        HttpSession sesion = request.getSession();
+        String idus = (String)sesion.getAttribute("usuario");
+        Consultas co2= new Consultas();
+        int idUser = co2.getIdUser(idus);
+        
+        String idusss = Integer.toString(idUser);
         
         boolean estadoB=false;
         
@@ -64,12 +77,59 @@ public class editarProducto2 extends HttpServlet {
         
         }
         
+        //video
+        String fileName = this.getServletContext().getRealPath("/VIDEOS");
+        //Esto solo es para mandarlos a la carpeta de videos que pos se crea sola y todo
+        String newname =idusss+System.currentTimeMillis();
+        
+        fileName = fileName + "/" +  newname;
+        FileOutputStream videoStreamOUT = null;
+        InputStream videoStreamIN = null;
+        
+         try 
+            {
+                videoStreamIN = request.getPart("video").getInputStream();
+                videoStreamOUT = new FileOutputStream(fileName);
+                int leido = 0;
+                leido = videoStreamIN.read();
+                while (leido != -1) {
+                    videoStreamOUT.write(leido);
+                    leido = videoStreamIN.read();
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.print(ex);
+            } catch (IOException ex) {
+                System.out.print(ex);
+            } finally {
+                if(videoStreamOUT!=null)
+                {
+                videoStreamOUT.flush();
+                }
+                videoStreamOUT.close();
+                videoStreamIN.close();
+            }
         
         
+        
+        //imagen 1
         String path = request.getServletContext().getRealPath("");
         File fileSaveDir = new File(path + FilesUtils.RUTE_USER_IMAGE);
         if(!fileSaveDir.exists()){
             fileSaveDir.mkdir();
+        }
+        
+        //imagen 2
+        String path2 = request.getServletContext().getRealPath("");
+        File fileSaveDir2 = new File(path2 + FilesUtils.RUTE_USER_IMAGE);
+        if(!fileSaveDir2.exists()){
+            fileSaveDir2.mkdir();
+        }
+        
+        //imagen 2
+        String path3 = request.getServletContext().getRealPath("");
+        File fileSaveDir3 = new File(path3 + FilesUtils.RUTE_USER_IMAGE);
+        if(!fileSaveDir3.exists()){
+            fileSaveDir3.mkdir();
         }
         
         //Resguardamos la imagen
@@ -77,9 +137,20 @@ public class editarProducto2 extends HttpServlet {
         String nameImage =  file.getName() + System.currentTimeMillis() + FilesUtils.GetExtension(contentType);
         file.write(path + nameImage);
         
+         //Resguardamos la imagen
+        String contentType2 = file2.getContentType();//Resguarden esto para saber el tipo
+        String nameImage2 =  file2.getName() + System.currentTimeMillis() + FilesUtils.GetExtension(contentType2);
+        file2.write(path2 + nameImage2);
+        
+        
+        //Resguardamos la imagen
+        String contentType3 = file3.getContentType();//Resguarden esto para saber el tipo
+        String nameImage3 =  file3.getName() + System.currentTimeMillis() + FilesUtils.GetExtension(contentType3);
+        file3.write(path3 + nameImage3);
+        
         Consultas co = new Consultas();
         
-          if(co.productoEditado(nombre, descripcion, unidades1, estadoB, categoria, file.getInputStream(),idProducto))
+          if(co.productoEditado(nombre, descripcion, unidades1, estadoB, categoria, file.getInputStream(),idProducto,file2.getInputStream(),file3.getInputStream(),newname))
          {
             response.sendRedirect("productoManejo");
         }else{

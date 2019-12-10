@@ -16,6 +16,8 @@ public class producto {
     private String categoria;
     private int precio;
     private byte[] imagen;
+    private byte[] imagen2;
+    private byte[] imagen3;
     private String valoracion;
     private int idproducto;
     private int unidades;
@@ -150,6 +152,23 @@ public class producto {
         return imagen;
     }
 
+    public byte[] getImagen2() {
+        return imagen2;
+    }
+
+    public void setImagen2(byte[] imagen2) {
+        this.imagen2 = imagen2;
+    }
+
+    public byte[] getImagen3() {
+        return imagen3;
+    }
+
+    public void setImagen3(byte[] imagen3) {
+        this.imagen3 = imagen3;
+    }
+ 
+    
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }

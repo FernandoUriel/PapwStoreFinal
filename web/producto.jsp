@@ -141,6 +141,17 @@
                             <img id="imgProduct" src="getProductoImage?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-xs-4 item-photo">
+                            <img id="imgProduct" src="getProductoImage2?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 item-photo">
+                            <img id="imgProduct" src="getProductoImage3?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
+                        </div>
+                    </div>
+                        
                 <div class="col-xs-4 item-photo">
                     <% String temp = listpro.getVideo();
                     
@@ -164,6 +175,7 @@
                         }
                         %>
                 </div>
+                <div class="container">
                 <div class="col-xs-5">
                     <!-- Datos del vendedor y titulo del producto -->
                     <h3><%= listpro.getNombre()%></h3>    
@@ -228,7 +240,8 @@
                         }
                         %>
                     </div>                                        
-                </div>                              
+                </div>
+                </div>
                 <div class="container">
                     <div class="col-xs-9">
                         <ul class="menu-items">

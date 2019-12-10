@@ -108,6 +108,14 @@
         <servlet-name>comentar</servlet-name>
         <servlet-class>Controller.comentar</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getProductoImage2</servlet-name>
+        <servlet-class>Controller.getProductoImage2</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getProductoImage3</servlet-name>
+        <servlet-class>Controller.getProductoImage3</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -211,6 +219,14 @@
     <servlet-mapping>
         <servlet-name>comentar</servlet-name>
         <url-pattern>/comentar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getProductoImage2</servlet-name>
+        <url-pattern>/getProductoImage2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getProductoImage3</servlet-name>
+        <url-pattern>/getProductoImage3</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

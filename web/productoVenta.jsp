@@ -136,7 +136,7 @@
 
             <h2>Colocar Producto</h2>
         
-            <form action="productoVenta" method="post" class="register-form" enctype="multipart/form-data">
+            <form action="productoVenta" method="POST" class="register-form" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="nombre">Nombre Producto</label>
@@ -153,25 +153,25 @@
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="unidades">Unidades</label>
-                        <input name="unidades" class="form-control" type="text" required>             
+                        <input name="unidades" class="form-control" type="number" required>             
                     </div>            
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="imagen1">Imagen 1</label>
-                        <input name="imagen1" class="form-control-file" type="file" >             
+                        <input name="imagen1" class="form-control-file" type="file" required>             
                     </div>
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="imagen2">Imagen 2(opcional)</label>
-                        <input name="imagen2" class="form-control-file" type="file" >             
+                        <label for="imagen2">Imagen 2</label>
+                        <input name="imagen2" class="form-control-file" type="file"  required>             
                     </div> 
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="imagen3">Imagen 3(opcional)</label>
-                        <input name="imagen3" class="form-control-file" type="file" >             
+                        <label for="imagen3">Imagen 3</label>
+                        <input name="imagen3" class="form-control-file" type="file" required>             
                     </div> 
                     <div class="col-md-6 col-sm-6 col-lg-6">
-                        <label for="video">Video (opcional)</label>
-                        <input name="video" class="form-control-file" type="file" >             
+                        <label for="video">Video</label>
+                        <input name="video" class="form-control-file" type="file" required>             
                     </div> 
                 </div>
                 <div class="row">      

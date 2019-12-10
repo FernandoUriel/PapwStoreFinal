@@ -289,6 +289,64 @@ public class Consultas extends Conexion{
         }
         return imageBytes;
     }
+     public byte [] getproImage2(int idProducto){
+        byte[] imageBytes = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+           
+            String consulta = "select imagen2 from producto where idproducto=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idProducto);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+                imageBytes = rs.getBytes("imagen2");
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        return imageBytes;
+    }
+      public byte [] getproImage3(int idProducto){
+        byte[] imageBytes = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+           
+            String consulta = "select imagen3 from producto where idproducto=?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idProducto);
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+                imageBytes = rs.getBytes("imagen3");
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        return imageBytes;
+    }
     
     public producto productoSearch(int idprod){
         producto proS = new producto();
@@ -297,7 +355,7 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select idproducto,nombre, descripcion, imagen1,unidades,idcategoria,estado,video from producto " +
+            String consulta = "select idproducto,nombre, descripcion, imagen1,unidades,idcategoria,estado,video,imagen2,imagen3 from producto " +
                 "where idproducto = ?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idprod);
@@ -309,6 +367,8 @@ public class Consultas extends Conexion{
                 proS.setNombre(rs.getString("nombre"));
                 proS.setDescripcion(rs.getString("descripcion"));
                 proS.setImagen(rs.getBytes("imagen1"));
+                proS.setImagen2(rs.getBytes("imagen2"));
+                proS.setImagen3(rs.getBytes("imagen3"));
                 proS.setUnidades(rs.getInt("unidades"));
                 proS.setIdCategoria(rs.getInt("idcategoria"));
                 proS.setEstado(rs.getBoolean("estado"));
@@ -355,13 +415,13 @@ public class Consultas extends Conexion{
     return false;
     
     }  
-    public boolean productoVenta(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen,String video){
+    public boolean productoVenta(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen,String video,InputStream imagen2,InputStream imagen3){
         PreparedStatement pst = null;
        try {
            
                   
-           String consulta = "insert into producto (nombre, descripcion, unidades, estado, fecha, idcategoria,imagen1,video) " +
-                                "values(?,?,?,?,NOW(),?,?,?)";
+           String consulta = "insert into producto (nombre, descripcion, unidades, estado, fecha, idcategoria,imagen1,video,imagen2, imagen3) " +
+                                "values(?,?,?,?,NOW(),?,?,?,?,?)";
            pst = getConexion().prepareStatement(consulta);
            pst.setString(1, nombre);
            pst.setString(2, descripcion);
@@ -370,6 +430,8 @@ public class Consultas extends Conexion{
            pst.setInt(5, categoria);
            pst.setBinaryStream(6, imagen);
            pst.setString(7, video);
+           pst.setBinaryStream(8, imagen2);
+           pst.setBinaryStream(9, imagen3);
            
            if(pst.executeUpdate()==1){
                return true;
@@ -386,12 +448,12 @@ public class Consultas extends Conexion{
     return false;
     }
     
-    public boolean productoEditado(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen, int idProducto){
+    public boolean productoEditado(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen, int idProducto,InputStream imagen2,InputStream imagen3,String video){
         PreparedStatement pst = null;
        try {
            
                   
-           String consulta = "update producto SET nombre=?, descripcion=?, unidades=?, estado=?, idcategoria=?, imagen1=? " +
+           String consulta = "update producto SET nombre=?, descripcion=?, unidades=?, estado=?, idcategoria=?, imagen1=?, imagen2=?, imagen3=?, video=? " +
                                 "WHERE idproducto = ?";
            pst = getConexion().prepareStatement(consulta);
            pst.setString(1, nombre);
@@ -400,7 +462,10 @@ public class Consultas extends Conexion{
            pst.setBoolean(4, estado);
            pst.setInt(5, categoria);
            pst.setBinaryStream(6, imagen);
-           pst.setInt(7, idProducto);
+           pst.setBinaryStream(7, imagen2);
+           pst.setBinaryStream(8, imagen3);
+           pst.setString(9, video);
+           pst.setInt(10, idProducto);
            
            if(pst.executeUpdate()==1){
                return true;
