@@ -297,7 +297,8 @@ public class Consultas extends Conexion{
         ResultSet rs = null;
         try {
            
-            String consulta = "select imagen2 from producto where idproducto=?";
+            //String consulta = "select imagen2 from producto where idproducto=?";
+            String consulta ="call getImage2(?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idProducto);
             rs= pst.executeQuery();
