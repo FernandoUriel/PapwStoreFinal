@@ -136,6 +136,16 @@
                <div class="col-xs-4 item-photo">
                    <img id="imgProduct" src="getProductoImage?idprod=<%= listpro.getIdproducto()%>" width="400px" height="500px" />
                 </div>
+                <div class="col-xs-4 item-photo">
+                    <% String temp = listpro.getVideo();
+                   
+                     String fileName = this.getServletContext().getRealPath("/VIDEOS");
+                      String dir = "/PapwStore/VIDEOS/"+temp;
+                    %>
+                    <video width="400px" height="500px" controls>
+                        <source src="<%=dir%>" type="video/mp4">
+                    </video>
+                </div>
                 <div class="col-xs-5">
                     <!-- Datos del vendedor y titulo del producto -->
                     <h3><%= listpro.getNombre()%></h3>    

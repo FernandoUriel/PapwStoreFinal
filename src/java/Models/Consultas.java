@@ -24,7 +24,8 @@ public class Consultas extends Conexion{
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            String consulta = "select * from usuario where username = ? and contrasena = ?";
+            //String consulta = "select * from usuario where username = ? and contrasena = ?";
+            String consulta = "call inicioSesion(?,?)";
             pst = getConexion().prepareStatement(consulta);
             pst.setString(1, usuario);
             pst.setString(2, contrasena);
@@ -296,7 +297,7 @@ public class Consultas extends Conexion{
         
         try {
            
-            String consulta = "select idproducto,nombre, descripcion, imagen1,unidades,idcategoria,estado from producto " +
+            String consulta = "select idproducto,nombre, descripcion, imagen1,unidades,idcategoria,estado,video from producto " +
                 "where idproducto = ?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idprod);
@@ -311,6 +312,7 @@ public class Consultas extends Conexion{
                 proS.setUnidades(rs.getInt("unidades"));
                 proS.setIdCategoria(rs.getInt("idcategoria"));
                 proS.setEstado(rs.getBoolean("estado"));
+                proS.setVideo(rs.getString("video"));
             }
             
        } catch (SQLException e) {
@@ -353,13 +355,13 @@ public class Consultas extends Conexion{
     return false;
     
     }  
-    public boolean productoVenta(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen){
+    public boolean productoVenta(String nombre, String descripcion, int unidades, boolean estado, int categoria, InputStream imagen,String video){
         PreparedStatement pst = null;
        try {
            
                   
-           String consulta = "insert into producto (nombre, descripcion, unidades, estado, fecha, idcategoria,imagen1) " +
-                                "values(?,?,?,?,NOW(),?,?)";
+           String consulta = "insert into producto (nombre, descripcion, unidades, estado, fecha, idcategoria,imagen1,video) " +
+                                "values(?,?,?,?,NOW(),?,?,?)";
            pst = getConexion().prepareStatement(consulta);
            pst.setString(1, nombre);
            pst.setString(2, descripcion);
@@ -367,6 +369,7 @@ public class Consultas extends Conexion{
            pst.setBoolean(4, estado);
            pst.setInt(5, categoria);
            pst.setBinaryStream(6, imagen);
+           pst.setString(7, video);
            
            if(pst.executeUpdate()==1){
                return true;

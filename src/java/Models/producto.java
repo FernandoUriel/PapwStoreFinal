@@ -22,6 +22,7 @@ public class producto {
     private boolean estado;
     private int idCategoria;
     private int idCarrito;
+    private String video;
     
 
    
@@ -76,6 +77,14 @@ public class producto {
         this.descripcion = descripcion;
         this.imagen = imagen;
         this.idproducto = idproducto;
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
 
     

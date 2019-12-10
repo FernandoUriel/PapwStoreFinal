@@ -160,7 +160,19 @@
                     <div class="col-md-6 col-sm-6 col-lg-6">
                         <label for="imagen1">Imagen 1</label>
                         <input name="imagen1" class="form-control-file" type="file" >             
-                    </div>            
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-lg-6">
+                        <label for="imagen2">Imagen 2(opcional)</label>
+                        <input name="imagen2" class="form-control-file" type="file" >             
+                    </div> 
+                    <div class="col-md-6 col-sm-6 col-lg-6">
+                        <label for="imagen3">Imagen 3(opcional)</label>
+                        <input name="imagen3" class="form-control-file" type="file" >             
+                    </div> 
+                    <div class="col-md-6 col-sm-6 col-lg-6">
+                        <label for="video">Video (opcional)</label>
+                        <input name="video" class="form-control-file" type="file" >             
+                    </div> 
                 </div>
                 <div class="row">      
                     <div class="col-md-6 col-sm-6 col-lg-6">

@@ -8,13 +8,17 @@ package Controller;
 import Models.Consultas;
 import Utils.FilesUtils;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 /**
@@ -64,6 +68,13 @@ public class productoVenta extends HttpServlet {
         int estado = Integer.parseInt(request.getParameter("estado"));
         boolean estadoB=false;
         
+        HttpSession sesion = request.getSession();
+        String idus = (String)sesion.getAttribute("usuario");
+        Consultas co2= new Consultas();
+        int idUser = co2.getIdUser(idus);
+        
+        String idusss = Integer.toString(idUser);
+        
         if(estado==1){
             estadoB=true;
         
@@ -71,7 +82,37 @@ public class productoVenta extends HttpServlet {
             estadoB=false;
         
         }
+        //video
+        String fileName = this.getServletContext().getRealPath("/VIDEOS");
+        //Esto solo es para mandarlos a la carpeta de videos que pos se crea sola y todo
+        String newname =idusss+System.currentTimeMillis();
         
+        fileName = fileName + "/" +  newname;
+        FileOutputStream videoStreamOUT = null;
+        InputStream videoStreamIN = null;
+        
+         try 
+            {
+                videoStreamIN = request.getPart("video").getInputStream();
+                videoStreamOUT = new FileOutputStream(fileName);
+                int leido = 0;
+                leido = videoStreamIN.read();
+                while (leido != -1) {
+                    videoStreamOUT.write(leido);
+                    leido = videoStreamIN.read();
+                }
+            } catch (FileNotFoundException ex) {
+                System.out.print(ex);
+            } catch (IOException ex) {
+                System.out.print(ex);
+            } finally {
+                if(videoStreamOUT!=null)
+                {
+                videoStreamOUT.flush();
+                }
+                videoStreamOUT.close();
+                videoStreamIN.close();
+            }
         
         
         String path = request.getServletContext().getRealPath("");
@@ -87,7 +128,7 @@ public class productoVenta extends HttpServlet {
         
         Consultas co = new Consultas();
         
-          if(co.productoVenta(nombre, descripcion, unidades,estadoB, categoria,file.getInputStream()))
+          if(co.productoVenta(nombre, descripcion, unidades,estadoB, categoria,file.getInputStream(),newname))
          {
             response.sendRedirect("dashboard");
         }else{
