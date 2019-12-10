@@ -5,12 +5,11 @@
  */
 package Controller;
 
-import Models.Compra;
 import Models.Consultas;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author fernandourg
  */
-public class filtroHistorial extends HttpServlet {
+@MultipartConfig(maxFileSize = 1000*1000*5, maxRequestSize = 1000*1000*25, fileSizeThreshold = 1000*1000)
+public class valoracion extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,8 +34,7 @@ public class filtroHistorial extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-    
+        PrintWriter out = response.getWriter();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,47 +49,34 @@ public class filtroHistorial extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String filtroSelect =request.getParameter("filtro");
-        int filtroSele = Integer.parseInt(filtroSelect);
-        Consultas co = new Consultas();
-        Consultas co2 = new Consultas();
+        int idProducto=Integer.parseInt(request.getParameter("proID"));
+        String like = request.getParameter("Like");
+        String dislike = request.getParameter("Dislike");
         
         HttpSession sesion = request.getSession();
         String idus = (String)sesion.getAttribute("usuario");
         
+        Consultas co2= new Consultas();
+        
+        
+        
         int idUser = co2.getIdUser(idus);
         
-        int orden=0;
+        Consultas co = new Consultas();
         
-        if(filtroSele==1){
-            orden=1;
-        }else if(filtroSele==2){
-            orden=3;
-        }
-        else if(filtroSele==3){
-            orden=4;
-        }
-        else if(filtroSele==4){
-            orden=5;
-        }
-            
-        
-        if(filtroSele ==0)
-        {
-            request.getRequestDispatcher("shwHCompra").forward(request, response);
-        }else if(filtroSele !=0){
+        if(dislike==null){
             Consultas co3 = new Consultas();
-            List<Compra> lisC=co3.shwCompraFiltro(idUser, orden);
-            
-            request.setAttribute("HiCom", lisC);
-        
-            request.getRequestDispatcher("historialCompra.jsp").forward(request, response);
-            
+                co3.addLike(idProducto, idUser);
+                
+                request.getRequestDispatcher("dashboard").forward(request, response);
+                
+        }else{
+            Consultas co3 = new Consultas();
+                co3.addDislike(idProducto, idUser);
+               
+                request.getRequestDispatcher("dashboard").forward(request, response);
+                
         }
-        
-        
-        
         
     }
 

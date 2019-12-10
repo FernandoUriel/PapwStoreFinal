@@ -13,7 +13,10 @@
     producto listpro;
     String nUsuario="";
     String isAdmin="";            
-    listpro = (producto) request.getAttribute("productoSh");                    
+    listpro = (producto) request.getAttribute("productoSh");
+    int likes =(Integer) request.getAttribute("cntLikes");
+    int dislikes =(Integer) request.getAttribute("cntDislikes");
+    int idpro= listpro.getIdproducto();
     
                     
 %>
@@ -144,17 +147,7 @@
         
                     <!-- Detalles especificos del producto -->
                     
-                    <div class="section">
-                    	<div class="product-rating">
-                            	<i class="fa fa-star gold"></i>
-                            	<i class="fa fa-star gold"></i>
-                            	<i class="fa fa-star gold"></i>
-                            	<i class="fa fa-star gold"></i>
-                            	<i class="far fa-star"></i>
-						</div>
-                                       
-                        
-                    </div>   
+                     
                     <div class="section">
                         <h6 class="title-attr"><small>CANTIDAD</small></h6>                    
                         <div>
@@ -163,7 +156,15 @@
                             <div class="btn-plus"><span><i class="fas fa-plus"></i></span></div>
                         </div>
                     </div>                
-        
+                    <form action="valoracion" method="GET" enctype="multipart/form-data">
+                        <div class="row">
+                            <input type="text" name="proID" value="<%= idpro%>" hidden/>
+                        <button type="submit" name="Like" class="btn btn-primary"><i class="far fa-thumbs-up"></i></button>
+                        <label><%=likes%></label>
+                        <button type="submit" name="Dislike"class="btn btn-primary"><i class="far fa-thumbs-down"></i></button>
+                        <label><%=dislikes%></label>
+                        </div>
+                    </form>
                     <!-- Botones de compra -->
                     <div class="section">
                         <%

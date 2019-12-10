@@ -130,22 +130,42 @@
     
    	<div class="container">
             <br>
+            
             <form action="filtroHistorial"method="GET">
                 <div class="row">
                     <div class="col-sm-6">
                         <select name="filtro"class="custom-select mr-sm-2">
-                            <option value="1">Fecha</option>
-                            <option value="2">Total</option>
-                            <option value="3">Unidades</option>
-                            <option value="5">Producto</option>
+                            <option value="0" selected></option>
+                            <option value="1">Nombre</option>
+                            <option value="2">Fecha</option>
+                            <option value="3">Precio</option>
+                            <option value="4">Unidades</option>
                         </select>
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" name="filtro2" class="form-control"/>
+                        <input type="submit" value="Ordenar" class="btn btn-info">
+                    </div>
+                </div>
+            </form>
+            <br>
+             <form action="filtroHistorial2"method="GET">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <select name="filtroB"class="custom-select mr-sm-2">
+                            <option value="0" selected></option>
+                            <option value="1">Nombre</option>
+                            <option value="2">Fecha</option>
+                            <option value="3">Precio</option>
+                            <option value="4">Unidades</option>
+                        </select>
                     </div>
                     <div class="col-sm-3">
-                        <input type="submit" value="Filtrar" class="btn btn-info">
+                        <input type="text" name="prBus">
                     </div>
+                    <div class="col-sm-3">
+                        <input type="submit" value="Buscar" class="btn btn-info">
+                    </div>
+                    
                 </div>
             </form>
             <br>
@@ -157,7 +177,7 @@
 					<th >Cantidad</th>
 					<th >Total</th>
 					<th class="text-center">Fecha</th>
-					<th ></th>
+					<th >Metodo de Pago</th>
 				</tr>
 			</thead>
                         
@@ -184,7 +204,16 @@
                                                 <td data-th="Subtotal" class="text-center"><%=Total%></td>
 						<td data-th="Subtotal" class="text-center"><%= cM.getFecha()%></td>
 						<td class="actions" data-th="">
-													
+                                                    <% String Metodo;
+                                                    if(cM.getFormapago()==1)
+                                                    {
+                                                        Metodo="Tarjeta";
+                                                        
+                                                    }else{
+                                                        Metodo="Efectivo";
+                                                    }
+                                                    %>
+                                                    <%=Metodo%>
 						</td>
 				</tr>
 			</tbody>

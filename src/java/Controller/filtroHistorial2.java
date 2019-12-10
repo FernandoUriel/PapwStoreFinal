@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author fernandourg
  */
-public class filtroHistorial extends HttpServlet {
+public class filtroHistorial2 extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,8 +34,8 @@ public class filtroHistorial extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-      PrintWriter out = response.getWriter();
-    
+        PrintWriter out = response.getWriter();
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -50,8 +50,8 @@ public class filtroHistorial extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        String filtroSelect =request.getParameter("filtro");
+        String filtroSelect =request.getParameter("filtroB");
+        String filtroinput =request.getParameter("prBus");
         int filtroSele = Integer.parseInt(filtroSelect);
         Consultas co = new Consultas();
         Consultas co2 = new Consultas();
@@ -61,37 +61,34 @@ public class filtroHistorial extends HttpServlet {
         
         int idUser = co2.getIdUser(idus);
         
-        int orden=0;
+        String  colB="";
         
         if(filtroSele==1){
-            orden=1;
+            colB="producto.nombre";
         }else if(filtroSele==2){
-            orden=3;
+            colB="compra.fecha";
         }
         else if(filtroSele==3){
-            orden=4;
+            colB="precio";
         }
         else if(filtroSele==4){
-            orden=5;
+            colB="compra.unidades";
         }
             
         
-        if(filtroSele ==0)
+        if(filtroSele ==0 && filtroinput=="")
         {
             request.getRequestDispatcher("shwHCompra").forward(request, response);
-        }else if(filtroSele !=0){
+        }else if(filtroSele !=0 && filtroinput==""){
+            request.getRequestDispatcher("shwHCompra").forward(request, response);
+            
+        }else{
+        
             Consultas co3 = new Consultas();
-            List<Compra> lisC=co3.shwCompraFiltro(idUser, orden);
-            
+            List<Compra> lisC=co3.shwCompraFiltro2(idUser, colB,filtroinput);
             request.setAttribute("HiCom", lisC);
-        
             request.getRequestDispatcher("historialCompra.jsp").forward(request, response);
-            
         }
-        
-        
-        
-        
     }
 
     /**

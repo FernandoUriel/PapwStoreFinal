@@ -35,8 +35,15 @@ public class productoShow extends HttpServlet {
         PrintWriter out = response.getWriter();
         int idpro = Integer.parseInt(request.getParameter("idprod"));
         Consultas co = new Consultas();
+        Consultas co2 = new Consultas();
+        Consultas co3 = new Consultas();
+        
+        int likes = co2.cntLikes(idpro);
+        int dislikes = co3.cntDislikes(idpro);
         producto proS = co.productoSearch(idpro);
         request.setAttribute("productoSh", proS);
+        request.setAttribute("cntLikes", likes);
+        request.setAttribute("cntDislikes", dislikes);
         
         request.getRequestDispatcher("producto.jsp").forward(request, response);
       

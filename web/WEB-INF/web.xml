@@ -96,6 +96,14 @@
         <servlet-name>filtroHistorial</servlet-name>
         <servlet-class>Controller.filtroHistorial</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>filtroHistorial2</servlet-name>
+        <servlet-class>Controller.filtroHistorial2</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>valoracion</servlet-name>
+        <servlet-class>Controller.valoracion</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Registrar</servlet-name>
         <url-pattern>/Registrar</url-pattern>
@@ -187,6 +195,14 @@
     <servlet-mapping>
         <servlet-name>filtroHistorial</servlet-name>
         <url-pattern>/filtroHistorial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>filtroHistorial2</servlet-name>
+        <url-pattern>/filtroHistorial2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>valoracion</servlet-name>
+        <url-pattern>/valoracion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

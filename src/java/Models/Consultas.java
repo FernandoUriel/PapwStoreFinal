@@ -1079,11 +1079,13 @@ public class Consultas extends Conexion{
         PreparedStatement pst = null;
         ResultSet rs = null;
         
+      
+        
         try {
            
             String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
                     "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
-                    "WHERE compra.idusuario = ?;";
+                    "WHERE compra.idusuario = ?";
             pst = getConexion().prepareStatement(consulta);
             pst.setInt(1, idusuario);
            
@@ -1118,9 +1120,269 @@ public class Consultas extends Conexion{
     
     }
      
+     public List<Compra> shwCompraFiltro(int idusuario, int order){
+        List<Compra> listCom = new ArrayList<Compra>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+      
+        
+        try {
+           
+            String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
+                    "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
+                    "WHERE compra.idusuario = ? "+
+                    "ORDER BY ?";
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idusuario);
+            pst.setInt(2, order);
+           
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String nombre = rs.getString("producto.nombre");
+            int idpro = rs.getInt("compra.idproducto");
+            String fecha = rs.getString("compra.fecha");
+            int precio = rs.getInt("precio");
+            int unidades = rs.getInt("compra.unidades");
+            int formapago = rs.getInt("formapago");
+            Compra com = new Compra(nombre,fecha,precio,unidades,formapago,idpro);
+            listCom.add(com);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listCom;
+    
+    }
+     public List<Compra> shwCompraFiltro2(int idusuario, String col, String prt){
+        List<Compra> listCom = new ArrayList<Compra>();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+      
+        
+        try {
+           
+            String consulta = "select producto.nombre,compra.idproducto, compra.fecha, precio, compra.unidades, formapago from compra " +
+                    "INNER JOIN producto ON producto.idproducto = compra.idproducto " +
+                    "WHERE compra.idusuario = ? AND "+col+" LIKE '%"+prt+"%'";
+                    
+            pst = getConexion().prepareStatement(consulta);
+            pst.setInt(1, idusuario);
+            //pst.setString(2, col);
+            //pst.setString(2, prt);
+           
+            rs= pst.executeQuery();
+            
+            while(rs.next())
+            {
+            String nombre = rs.getString("producto.nombre");
+            int idpro = rs.getInt("compra.idproducto");
+            String fecha = rs.getString("compra.fecha");
+            int precio = rs.getInt("precio");
+            int unidades = rs.getInt("compra.unidades");
+            int formapago = rs.getInt("formapago");
+            Compra com = new Compra(nombre,fecha,precio,unidades,formapago,idpro);
+            listCom.add(com);
+            
+            }
+            
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+            try {
+                if(getConexion() != null) getConexion().close();
+                if(pst != null) pst.close();
+                if(rs != null) rs.close();
+            } catch (SQLException e) {
+                System.out.println("Error " +e);
+            }
+        }
+        
+        return listCom;
+    
+    }
+     
+     public int cntLikes(int idProducto){
+        int like = 1;
+        int canLike=0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+
+             String consulta = "SELECT COUNT(valoracion.valoracion) as likes FROM valoracion "+ 
+                     "where valoracion.idproducto = ? AND valoracion.valoracion = ?";
+             pst = getConexion().prepareStatement(consulta);
+             pst.setInt(1, idProducto);
+             pst.setInt(2, like);
+             rs= pst.executeQuery();
+
+             while(rs.next())
+             {
+                 canLike = rs.getInt("likes");
+             }
+
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+             try {
+                 if(getConexion() != null) getConexion().close();
+                 if(pst != null) pst.close();
+                 if(rs != null) rs.close();
+             } catch (SQLException e) {
+                 System.out.println("Error " +e);
+             }
+         }
+       return canLike;
+      
+    
+    }
+     
+    public int cntDislikes(int idProducto){
+        int like = 0;
+        int canLike=0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+
+             String consulta = "SELECT COUNT(valoracion.valoracion) as likes FROM valoracion "+ 
+                     "where valoracion.idproducto = ? AND valoracion.valoracion = ?";
+             pst = getConexion().prepareStatement(consulta);
+             pst.setInt(1, idProducto);
+             pst.setInt(2, like);
+             rs= pst.executeQuery();
+
+             while(rs.next())
+             {
+                 canLike = rs.getInt("likes");
+             }
+
+        } catch (SQLException e) {
+            System.out.println("Error " + e);
+        }finally{
+             try {
+                 if(getConexion() != null) getConexion().close();
+                 if(pst != null) pst.close();
+                 if(rs != null) rs.close();
+             } catch (SQLException e) {
+                 System.out.println("Error " +e);
+             }
+         }
+       return canLike;
+      
+    
+    }
+    
+    public void addLike(int idPro, int idusuario){
+       PreparedStatement pst = null;
+       PreparedStatement pst2 = null;
+       PreparedStatement pst3 = null;
+       ResultSet rs = null;
+       
+       boolean like = true;
+       try {
+           
+           String validacion ="select valoracion.valoracion from valoracion WHERE idusuario=? AND idproducto =?";
+           
+           pst = getConexion().prepareStatement(validacion);
+           //pst.setBoolean(1, like);
+           pst.setInt(1, idusuario);
+           pst.setInt(2, idPro);
+           rs=pst.executeQuery();
+           if(rs.next()){
+               String update="update valoracion set valoracion.valoracion=true WHERE idusuario=? AND idproducto=?";
+               pst2 = getConexion().prepareStatement(update);
+               pst2.setInt(1, idusuario);
+               pst2.setInt(2, idPro);
+              pst2.executeUpdate();
+           }else{
+           String consulta = "insert into valoracion (valoracion, idusuario, idproducto) " +
+                             "values (?,?,?)";
+           pst3 = getConexion().prepareStatement(consulta);
+           pst3.setBoolean(1, like);
+           pst3.setInt(2, idusuario);
+           pst3.setInt(3, idPro);
+           pst3.executeUpdate();
+           
+           }
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+               if(pst2 != null) pst2.close();
+               if(pst3 != null) pst3.close();
+               if(rs != null) rs.close();
+           } catch (Exception e) {
+           }
+       }
+       
+   }
+    
+    public void addDislike(int idPro, int idusuario){
+       PreparedStatement pst = null;
+       PreparedStatement pst2 = null;
+       PreparedStatement pst3 = null;
+       ResultSet rs = null;
+       boolean like = false;
+       try {
+           
+           String validacion ="select valoracion.valoracion from valoracion WHERE idusuario=? AND idproducto =?";
+            pst = getConexion().prepareStatement(validacion);
+           //pst.setBoolean(1, like);
+           pst.setInt(1, idusuario);
+           pst.setInt(2, idPro);
+           rs=pst.executeQuery();
+           if(rs.next()){
+               String update="update valoracion set valoracion.valoracion=false WHERE idusuario=? AND idproducto=?";
+               pst2 = getConexion().prepareStatement(update);
+               pst2.setInt(1, idusuario);
+               pst2.setInt(2, idPro);
+               pst2.executeUpdate();
+           
+           }else{
+           
+            String consulta = "insert into valoracion (valoracion, idusuario, idproducto) " +
+                             "values (?,?,?)";
+           pst = getConexion().prepareStatement(consulta);
+           pst.setBoolean(1, like);
+           pst.setInt(2, idusuario);
+           pst.setInt(3, idPro);
+           
+           pst3.executeUpdate();}
+       } catch (SQLException e) {
+           System.out.println("Error " + e);
+       }finally{
+           try {
+               if(getConexion() != null) getConexion().close();
+               if(pst != null) pst.close();
+               if(pst2 != null) pst2.close();
+               if(pst3 != null) pst3.close();
+               if(rs != null) rs.close();
+           } catch (Exception e) {
+           }
+       }
+      
+   }
+     
     public static void main(String[] args) {
         
-        Consultas co = new Consultas();
+        //Consultas co = new Consultas();
+        //System.out.println(co.addLike(21, 9));
         
         /*Consultas co2 = new Consultas();
         int unidades = 8;
@@ -1135,7 +1397,7 @@ public class Consultas extends Conexion{
         //List<Chat> chat = co2.getChats();
         //List<producto> pro = co.cartShow(9);
         
-       List<producto> listb = co.cartShow(8);
+       //List<Compra> listb = co.shwCompraFiltro2(9,"producto.nombre","Funko");
         
        /*for(producto lib : listb){
            System.out.println(lib.getNombre());
@@ -1174,10 +1436,6 @@ public class Consultas extends Conexion{
        {
            System.out.println(c.getIdcarrito());
        }*/
-       for(producto p : listb){
-       
-       System.out.println(p.getNombre());
-       }
-            
+      
     }
 }
